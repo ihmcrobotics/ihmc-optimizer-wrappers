@@ -89,7 +89,7 @@ public class QpOASESWrapper
    
 
 
-   public void solve(DenseMatrix64F Q, DenseMatrix64F f, DenseMatrix64F Aeq, DenseMatrix64F beq, 
+   public int solve(DenseMatrix64F Q, DenseMatrix64F f, DenseMatrix64F Aeq, DenseMatrix64F beq, 
          DenseMatrix64F Ain, DenseMatrix64F bin, DenseMatrix64F lb, DenseMatrix64F ub, DenseMatrix64F x, boolean initialize) 
    {
       
@@ -111,12 +111,11 @@ public class QpOASESWrapper
       CommonOps.insert(bin, ubA, beq.numRows, 0);
 
       //see C-code for retCode explanation
-      int retCode;
       double[] 
         lbData=(lb==null)?null:lb.getData(), 
         ubData=(ub==null)?null:ub.getData();
       
-      
+      int retCode=0;
       if(coldStart)
       {
          retCode = solveNative(Q.getData(), f.getData(), A.getData(), lbData, ubData, lbA.getData(), ubA.getData(), nWSR, cputime, x.getData());
@@ -126,6 +125,8 @@ public class QpOASESWrapper
          retCode = hotstartNative(Q.getData(), f.getData(), A.getData(), lbData, ubData, lbA.getData(), ubA.getData(), nWSR, cputime, x.getData());
       }
       coldStart=false;
+      
+      return retCode;
    }
    
    public double getLastCpuTime()
