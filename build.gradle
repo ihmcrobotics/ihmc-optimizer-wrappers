@@ -1,0 +1,36 @@
+apply plugin: 'java'
+apply plugin: 'maven-publish'
+apply from: 'gradleScripts/util.gradle'
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+version = '0.0'
+
+setupDefaultDirectoryStructure()
+
+setupDefaultRepositories()
+
+setupProjectSpecificDependencies()
+
+publishing {
+	publications {
+		mavenJava(MavenPublication) {
+
+			groupId 'us.ihmc'
+			artifactId 'IHMCOptimizerWrappers'
+			version '0.0.0'
+			from components.java
+		}
+
+	}
+
+	repositories {
+		maven {
+			credentials {	
+				username "${nexus_username}"
+				password "${nexus_password}"
+			}
+			url "https://bengal.ihmc.us/nexus/content/repositories/releases"
+		}
+	}
+}
