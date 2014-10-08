@@ -16,7 +16,6 @@ public class NativeLibraryLoader {
 	   private final static String OASES_MAC_64 = "libOASESConstrainedQPSolver_rel.dylib";
 	   private final static String OASES_LINUX_64 = "libOASESConstrainedQPSolver_rel.so";
 	   private final static String OASES_WINDOWS_64 = "OASESConstrainedQPSolver_rel.dll";
-	   private final static String OASES_VERSION = "3.0";
 	   private static final HashSet<String> loadedLibraries = new HashSet<String>();
 	   
 	   
@@ -51,11 +50,11 @@ public class NativeLibraryLoader {
 	   public static void loadOASES()
 	   {
 		   String libOASES = getOASESName();
-		   loadLibraryFromClassPath(libOASES, "0.0");
+		   loadLibraryFromClassPath(libOASES);
 	   }
 	   
 	   
-	   private synchronized static void loadLibraryFromClassPath(String library, String version)
+	   private synchronized static void loadLibraryFromClassPath(String library)
 	   {
 	      if(loadedLibraries.contains(library))
 	      {
@@ -66,7 +65,7 @@ public class NativeLibraryLoader {
 	      {
 	         directory.mkdirs();
 	      }
-	      File lib = new File(directory, library + "." + version);
+	      File lib = new File(directory, library);
 	      if(!lib.exists())
 	      {
 	         InputStream stream = NativeLibraryLoader.class.getClassLoader().getResourceAsStream(library);
