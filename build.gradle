@@ -34,3 +34,9 @@ publishing {
 		}
 	}
 }
+
+jar {
+	manifest {
+		attributes 'Main-Class': 'us.ihmc.convexOptimization.QpOASESWrapper'
+	}
+}

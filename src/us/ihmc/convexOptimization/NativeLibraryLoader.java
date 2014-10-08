@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashSet;
 
+import com.sun.jna.Native;
+
 
 public class NativeLibraryLoader {
 
@@ -78,8 +80,12 @@ public class NativeLibraryLoader {
 	         {
 	         }
 	      }
-		  System.load(lib.getAbsolutePath());         
-	    
+	      
+//	      System.setProperty("jna.library.path", lib.getAbsolutePath());
+//	      System.out.println(lib.getAbsolutePath());
+//	      Native.register(lib.getAbsolutePath());
+//		  System.load(lib.getAbsolutePath());         
+	      System.setProperty("jna.library.path", lib.getParentFile().getAbsolutePath());
 	      loadedLibraries.add(library);
 	   }
 	   
