@@ -84,7 +84,7 @@ namespace ublas = boost::numeric::ublas;
 double solve_quadprog(ublas::matrix<double>& G, ublas::vector<double>& g0, 
                       const ublas::matrix<double>& CE, const ublas::vector<double>& ce0,  
                       const ublas::matrix<double>& CI, const ublas::vector<double>& ci0, 
-                      ublas::vector<double>& x);
+                      ublas::vector<double>& x, int& iter);
 }
 
 #endif // #define _UQUADPROGPP

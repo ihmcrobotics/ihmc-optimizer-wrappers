@@ -67,7 +67,7 @@ void print_vector(const char* name, const Vector<T>& v, int n = -1);
 double solve_quadprog(Matrix<double>& G, Vector<double>& g0, 
                       const Matrix<double>& CE, const Vector<double>& ce0,  
                       const Matrix<double>& CI, const Vector<double>& ci0, 
-                      Vector<double>& x)
+                      Vector<double>& x, int& iter)
 {
   std::ostringstream msg;
   {
@@ -130,7 +130,7 @@ double solve_quadprog(Matrix<double>& G, Vector<double>& g0,
   double t, t1, t2; /* t is the step lenght, which is the minimum of the partial step length t1 
     * and the full step length t2 */
   Vector<int> A(m + p), A_old(m + p), iai(m + p);
-  int q, iq, iter = 0;
+  int q, iq;
   Vector<bool> iaexcl(m + p);
 	
   /* p is the number of equality constraints */

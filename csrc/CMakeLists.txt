@@ -18,10 +18,12 @@ LIST(APPEND qpOASES_SOURCE "OASESConstrainedQPSolver.cpp")
 add_library(qpOASES ${qpOASES_SOURCE})
 add_library(OASESConstrainedQPSolver SHARED  ${qpOASES_SOURCE})
 
+include_directories(quadprog/src)
+add_library(uQuadProg SHARED quadprog/src/uQuadProg++.cc QuadProgSolver.cpp)
+
 if (NOT WIN32)
 	target_link_libraries(OASESConstrainedQPSolver m qpOASES)
 endif()
 
-set(qpOASES_SHARED OUTPUT_NAME "OASESConstrainedQPSolver")
-
 INSTALL(TARGETS   OASESConstrainedQPSolver RUNTIME DESTINATION resources LIBRARY DESTINATION resources)
+INSTALL(TARGETS   uQuadProg RUNTIME DESTINATION resources LIBRARY DESTINATION resources)

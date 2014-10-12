@@ -13,33 +13,44 @@ public class NativeLibraryLoader {
 
 	   public final static String LIBRARY_LOCATION = new File(System.getProperty("user.home"), ".ihmc" + File.separator + "lib").getAbsolutePath();
 	   
-	   private final static String OASES_MAC_64 = "libOASESConstrainedQPSolver_rel.dylib";
-	   private final static String OASES_LINUX_64 = "libOASESConstrainedQPSolver_rel.so";
-	   private final static String OASES_WINDOWS_64 = "OASESConstrainedQPSolver_rel.dll";
-	   private static final HashSet<String> loadedLibraries = new HashSet<String>();
-	   
 	   
 	   private NativeLibraryLoader()
 	   {
 	      // Disallow construction
 	   }
 	   
+	   /* these are tailored with CMake default dynamic library names */
+	   private static String get_OSX_MAC(String baseName)
+	   {
+		   return "lib" + baseName + "_rel.dylib";
+	   }
+	   private static String get_LINUX_64(String baseName)
+	   {
+		   return "lib" + baseName + "_rel.so";
+	   }
+	   private static String  get_WINDOWS_64(String baseName)
+	   {
+		   return baseName + "_rel.dll";
+	   }
 	   
-	   private static String getOASESName()
+	   private static final HashSet<String> loadedLibraries = new HashSet<String>();
+	   
+	   
+	   public static String getOSDependentName(String baseName)
 	   {
 	      if(isX86_64())
 	      {
 	         if(isLinux())
 	         {
-	            return OASES_LINUX_64;
+	            return get_LINUX_64(baseName);
 	         }
 	         else if (isMac())
 	         {
-	            return OASES_MAC_64;
+	            return get_OSX_MAC(baseName);
 	         }
 	         else if (isWindows())
 	         {
-	            return OASES_WINDOWS_64;
+	            return get_WINDOWS_64(baseName);
 	         }
 	      }
 	      
@@ -47,14 +58,8 @@ public class NativeLibraryLoader {
 	            + " unsupported. Only 64bit Linux/Mac/Windows supported for now.");
 	   }
 	   
-	   public static void loadOASES()
-	   {
-		   String libOASES = getOASESName();
-		   loadLibraryFromClassPath(libOASES);
-	   }
 	   
-	   
-	   private synchronized static void loadLibraryFromClassPath(String library)
+	   public synchronized static void loadLibraryFromClassPath(String library, Class<?> interfaceClass)
 	   {
 	      if(loadedLibraries.contains(library))
 	      {
@@ -66,7 +71,7 @@ public class NativeLibraryLoader {
 	         directory.mkdirs();
 	      }
 	      File lib = new File(directory, library);
-	      if(!lib.exists())
+//	      if(!lib.exists())
 	      {
 	         InputStream stream = NativeLibraryLoader.class.getClassLoader().getResourceAsStream(library);
 	         writeStreamToFile(stream, lib);
@@ -80,11 +85,7 @@ public class NativeLibraryLoader {
 	         }
 	      }
 	      
-//	      System.setProperty("jna.library.path", lib.getAbsolutePath());
-//	      System.out.println(lib.getAbsolutePath());
-//	      Native.register(lib.getAbsolutePath());
-//		  System.load(lib.getAbsolutePath());         
-	      System.setProperty("jna.library.path", lib.getParentFile().getAbsolutePath());
+	      Native.register(interfaceClass, lib.getAbsolutePath());
 	      loadedLibraries.add(library);
 	   }
 	   

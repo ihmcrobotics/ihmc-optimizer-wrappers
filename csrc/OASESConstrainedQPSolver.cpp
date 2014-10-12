@@ -2,13 +2,12 @@
 #include <qpOASES.hpp>
 #include <iostream>
 #include <limits>
-#include <jni.h>
 
 extern "C"
 {
 	qpOASES::SQProblem *qp=NULL;
 	qpOASES::Options *options=NULL;
-	JNIEXPORT void initializeNative (int nvar, int ncon)
+	void initializeNative (int nvar, int ncon)
 	{
 		if(qp) delete qp;
 		qp = new qpOASES::SQProblem(nvar, ncon,qpOASES::HST_SEMIDEF);
@@ -31,7 +30,7 @@ extern "C"
 	 *	     lb <=  x <= ub
 	 *
 	 */
-	JNIEXPORT int hotstartNative(double*H, double* g, double* A, double* lb, double* ub, double* lbA, double* ubA, int* nWSR, double* cputime, double* x)
+	int hotstartNative(double*H, double* g, double* A, double* lb, double* ub, double* lbA, double* ubA, int* nWSR, double* cputime, double* x, double *objVal)
 	{
 		if(!qp)
 		{
@@ -50,10 +49,11 @@ extern "C"
 			std::cerr << "OASES::getPrimalSolution failed: retVal= " << retPrimal<< std::endl;
 			return retPrimal;
 		}
+		*objVal=qp->getObjVal();
 		return 0;
 	}
 
-	JNIEXPORT int solveNative(double*H, double* g, double* A, double* lb, double* ub, double* lbA, double* ubA, int* nWSR, double* cputime, double* x)
+	int solveNative(double*H, double* g, double* A, double* lb, double* ub, double* lbA, double* ubA, int* nWSR, double* cputime, double* x, double *objVal)
 	{
 
 		if(!qp)
@@ -75,16 +75,9 @@ extern "C"
 			std::cerr << "OASES::getPrimalSolution failed: retVal= " << retPrimal<< std::endl;
 			return retPrimal;
 		}
+
+		*objVal=qp->getObjVal();
 		return 0;
 	}
 
-	JNIEXPORT double getObjVal()
-	{
-		if(qp)
-			return qp->getObjVal();
-		else
-		{
-			return std::numeric_limits<double>::quiet_NaN();
-		}
-	}
 }

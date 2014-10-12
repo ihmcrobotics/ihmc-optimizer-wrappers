@@ -4,10 +4,7 @@ package us.ihmc.convexOptimization;
 
 import org.ejml.data.DenseMatrix64F;
 import org.ejml.ops.CommonOps;
-
 //~--- JDK imports ------------------------------------------------------------
-
-import com.sun.jna.Native;
 
 public class QpOASESWrapper {
 
@@ -18,15 +15,13 @@ public class QpOASESWrapper {
      *  Aeq x = beq,
      */
     static {
-
-//      if(System.getProperty("jna.library.path")==null)
-//        System.setProperty("jna.library.path",System.getProperty("java.library.path"));
-      NativeLibraryLoader.loadOASES();
-      Native.register("OASESConstrainedQPSolver_rel");
+        NativeLibraryLoader.loadLibraryFromClassPath(
+            NativeLibraryLoader.getOSDependentName("OASESConstrainedQPSolver"), QpOASESWrapper.class);
     }
 
     double[]               cputime = new double[1];
     int[]                  nWSR    = new int[1];
+    double[]               objVal  = new double[1];
     private DenseMatrix64F A       = null;
     private DenseMatrix64F lbA     = null;
     private DenseMatrix64F ubA     = null;
@@ -46,9 +41,7 @@ public class QpOASESWrapper {
         initialize(nvar, ncon);
     }
 
-    public static native void initializeNative(int nvar, int ncon);
-
-    public static native double getObjVal();
+    private static native void initializeNative(int nvar, int ncon);
 
     /**
      *
@@ -65,22 +58,22 @@ public class QpOASESWrapper {
      * @return returnCode from C-API
      */
     public static native int solveNative(double[] H, double[] g, double[] A, double[] lb, double[] ub, double[] lbA,
-            double[] ubA, int[] nWSR, double[] cputime, double[] x);
+            double[] ubA, int[] nWSR, double[] cputime, double[] x, double[] objVal);
 
     public static native int hotstartNative(double[] H, double[] g, double[] A, double[] lb, double[] ub, double[] lbA,
-            double[] ubA, int[] nWSR, double[] cputime, double[] x);
+            double[] ubA, int[] nWSR, double[] cputime, double[] x, double[] objVal);
 
     private void initialize(int nvar, int ncon) {
         if ((this.nvar != nvar) || (this.ncon != ncon)) {
             initializeNative(nvar, ncon);
-            this.nvar = nvar;
-            this.ncon = ncon;
-            A         = new DenseMatrix64F(this.ncon, this.nvar);
-            lbA       = new DenseMatrix64F(ncon, 1);
-            ubA       = new DenseMatrix64F(ncon, 1);
-            coldStart = true;
+            this.nvar  = nvar;
+            this.ncon  = ncon;
+            A          = new DenseMatrix64F(this.ncon, this.nvar);
+            lbA        = new DenseMatrix64F(ncon, 1);
+            ubA        = new DenseMatrix64F(ncon, 1);
+            coldStart  = true;
             cputime[0] = Double.MAX_VALUE;
-            nWSR[0]=Integer.MAX_VALUE;
+            nWSR[0]    = Integer.MAX_VALUE;
         }
     }
 
@@ -113,10 +106,10 @@ public class QpOASESWrapper {
 
         if (coldStart) {
             retCode = solveNative(Q.getData(), f.getData(), A.getData(), lbData, ubData, lbA.getData(), ubA.getData(),
-                                  nWSR, cputime, x.getData());
+                                  nWSR, cputime, x.getData(), objVal);
         } else {
             retCode = hotstartNative(Q.getData(), f.getData(), A.getData(), lbData, ubData, lbA.getData(),
-                                     ubA.getData(), nWSR, cputime, x.getData());
+                                     ubA.getData(), nWSR, cputime, x.getData(), objVal);
         }
 
         coldStart = false;
@@ -144,6 +137,10 @@ public class QpOASESWrapper {
         return coldStart;
     }
 
+    public double getOptVal() {
+        return objVal[0];
+    }
+
     public static void main(String[] arg) {
         int            nin    = 1,
                        neq    = 1,
@@ -154,13 +151,10 @@ public class QpOASESWrapper {
         DenseMatrix64F beq    = new DenseMatrix64F(neq, 1, true, 0);
         DenseMatrix64F Ain    = new DenseMatrix64F(nin, nv, true, 2, 1);
         DenseMatrix64F bin    = new DenseMatrix64F(nin, 1, true, 0);
-        DenseMatrix64F lb     = new DenseMatrix64F(nv, 1);
-        DenseMatrix64F ub     = new DenseMatrix64F(nv, 1);
         DenseMatrix64F x      = new DenseMatrix64F(nv, 1, true, -1, 1);
         QpOASESWrapper solver = new QpOASESWrapper();
+        int            iter   = solver.solve(Q, f, Aeq, beq, Ain, bin, null, null, x, true);
 
-        
-        solver.solve(Q, f, Aeq, beq, Ain, bin, null, null, x, false);
-        System.out.println("xopt=" + x);
+        System.out.println("xopt=" + x + "iter=" + iter + " optVal=" + solver.getOptVal());
     }
 }

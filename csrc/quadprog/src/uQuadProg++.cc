@@ -73,7 +73,7 @@ void print_vector(const char* name, const ublas::vector<T>& v, int n = -1);
 double solve_quadprog(ublas::matrix<double>& G, ublas::vector<double>& g0, 
                       const ublas::matrix<double>& CE, const ublas::vector<double>& ce0,  
                       const ublas::matrix<double>& CI, const ublas::vector<double>& ci0, 
-                      ublas::vector<double>& x)
+                      ublas::vector<double>& x, int& iter)
 {
   std::ostringstream msg;
   {
@@ -136,7 +136,7 @@ double solve_quadprog(ublas::matrix<double>& G, ublas::vector<double>& g0,
   double t, t1, t2; /* t is the step lenght, which is the minimum of the partial step length t1 
     * and the full step length t2 */
   ublas::vector<int> A(m + p), A_old(m + p), iai(m + p);
-  int q, iq, iter = 0;
+  int q, iq;
   ublas::vector<bool> iaexcl(m + p);
 	
   /* p is the number of equality constraints */
