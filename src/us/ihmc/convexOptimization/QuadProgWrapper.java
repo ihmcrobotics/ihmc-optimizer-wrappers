@@ -6,13 +6,6 @@ import org.ejml.data.DenseMatrix64F;
 //~--- JDK imports ------------------------------------------------------------
 
 public class QuadProgWrapper {
-
-    /*
-     *  minimizex (1/2)x'Qx+f'x
-     *  s.t.
-     *  Ain x <= bin
-     *  Aeq x = beq,
-     */
     static {
         NativeLibraryLoader.loadLibraryFromClassPath(NativeLibraryLoader.getOSDependentName("uQuadProg"),
                 QuadProgWrapper.class);
@@ -57,6 +50,8 @@ public class QuadProgWrapper {
      *  ci0: m
      *
      *    x: n
+     *    
+     *    Both EJML and ublas are row-major
      */
     public static native double solveNative(double[] G, double[] g0, double[] CE, double[] ce0, double[] CI,
             double[] ci0, double[] x, int[] nIteration);

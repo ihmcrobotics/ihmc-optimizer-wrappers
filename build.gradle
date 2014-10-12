@@ -39,4 +39,6 @@ jar {
 	manifest {
 		attributes 'Main-Class': 'us.ihmc.convexOptimization.QpOASESWrapper'
 	}
+	
+    from sourceSets.main.allSource
 }
