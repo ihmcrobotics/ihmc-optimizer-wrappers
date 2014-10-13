@@ -85,7 +85,13 @@ public class NativeLibraryLoader {
 	         }
 	      }
 	      
-	      Native.register(interfaceClass, lib.getAbsolutePath());
+	      try{
+                      Native.register(interfaceClass, lib.getAbsolutePath());
+	      }
+	      catch(NoSuchMethodError e)
+	      {
+	    	  throw new RuntimeException("NativeLibraryLoader: JNA too old");
+	      }
 	      loadedLibraries.add(library);
 	   }
 	   
