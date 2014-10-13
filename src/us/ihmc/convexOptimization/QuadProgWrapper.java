@@ -12,6 +12,7 @@ public class QuadProgWrapper {
     }
 
     int[]   nIteration = new int[1];
+    byte[]  errMsg = new byte[512];
     double  objVal     = 0;
     int     nVariables, nEqualityConstraints, nInequalityConstraints;
     boolean coldStart;
@@ -54,7 +55,7 @@ public class QuadProgWrapper {
      *    Both EJML and ublas are row-major
      */
     public static native double solveNative(double[] G, double[] g0, double[] CE, double[] ce0, double[] CI,
-            double[] ci0, double[] x, int[] nIteration);
+            double[] ci0, double[] x, int[] nIteration, byte[] errMsg);
 
     private void initialize(int nVariables, int nEqualityConstraints, int nIneqalityConstraints) {
         if ((this.nVariables != nVariables) || (this.nEqualityConstraints != nEqualityConstraints)
@@ -69,7 +70,7 @@ public class QuadProgWrapper {
 
     public int solve(DenseMatrix64F Q, DenseMatrix64F f, DenseMatrix64F Aeq, DenseMatrix64F beq, DenseMatrix64F Ain,
                      DenseMatrix64F bin, DenseMatrix64F x, boolean initialize) {
-        if ((Aeq.numCols != Ain.numCols) || (Aeq.numCols != x.numRows)) {
+        if ((Aeq.numRows!= Ain.numRows) || (Aeq.numRows!= x.numRows)) {
             throw new RuntimeException("inconsistent constraints");
         }
 
@@ -77,9 +78,11 @@ public class QuadProgWrapper {
             coldStart = true;
         }
 
-        initialize(Aeq.numCols, Aeq.numRows, Ain.numRows);
+        initialize(Aeq.numRows, Aeq.numCols, Ain.numCols);
         objVal = solveNative(Q.getData(), f.getData(), Aeq.getData(), beq.getData(), Ain.getData(), bin.getData(),
-                             x.getData(), nIteration);
+                             x.getData(), nIteration, errMsg);
+        if(nIteration[0]<0)
+        	throw new RuntimeException(new String(errMsg));
         coldStart = false;
 
         return nIteration[0];
@@ -99,9 +102,9 @@ public class QuadProgWrapper {
                         nv     = 2;
         DenseMatrix64F  Q      = new DenseMatrix64F(nv, nv, true, 1, 0, 0, 1);
         DenseMatrix64F  f      = new DenseMatrix64F(nv, 1, true, 1, 0);
-        DenseMatrix64F  Aeq    = new DenseMatrix64F(neq, nv, true, -1, -1);
+        DenseMatrix64F  Aeq    = new DenseMatrix64F(nv, neq, true, -1, -1);
         DenseMatrix64F  beq    = new DenseMatrix64F(neq, 1, true, 0);
-        DenseMatrix64F  Ain    = new DenseMatrix64F(nin, nv, true, -2, -1);
+        DenseMatrix64F  Ain    = new DenseMatrix64F(nv, nin, true, -2, -1);
         DenseMatrix64F  bin    = new DenseMatrix64F(nin, 1, true, 0);
         DenseMatrix64F  x      = new DenseMatrix64F(nv, 1, true, 0, 0);
         QuadProgWrapper solver = new QuadProgWrapper();

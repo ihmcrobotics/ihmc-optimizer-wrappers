@@ -5,6 +5,8 @@
 #include "uQuadProg++.hh"
 #include <iostream>
 #include <limits>
+#include <cstring>
+#include <cmath>
 
 extern "C"
 {
@@ -69,8 +71,7 @@ extern "C"
 	}
 
 
-
-	double solveNative(double* _G, double* _g0, double* _CE, double* _ce0, double* _CI, double* _ci0, double* _x, int* iter)
+	double solveNative(double* _G, double* _g0, double* _CE, double* _ce0, double* _CI, double* _ci0, double* _x, int* iter, char* errMsg)
 	{
 
 		if(nvar<0 || ne<0 || ni<0)
@@ -98,7 +99,17 @@ extern "C"
 		std::cout << "ci0" << ci0 << std::endl;
 		std::cout << "x" << x << std::endl;
 #endif
-		double ret=uQuadProgPP::solve_quadprog(G, g0, CE, ce0, CI, ci0, x, *iter);
+		double ret=NAN;
+		try{
+			ret=uQuadProgPP::solve_quadprog(G, g0, CE, ce0, CI, ci0, x, *iter);
+		}
+		catch(const std::runtime_error& e)
+		{
+			strncpy(errMsg, e.what(), 512);
+			*iter=-1;
+			return NAN;
+		}
+
 		for(int i=0;i<x.size();i++)
 				_x[i] = x.data()[i];
 		return ret;
