@@ -65,8 +65,15 @@ public class NativeLibraryLoader {
 		if (loadedLibraries.contains(library)) {
 			return;
 		}
-		Native.register(interfaceClassJNA,
-				extractLibraryFromClassPath(packageName, library));
+	      try{
+			Native.register(interfaceClassJNA,
+					extractLibraryFromClassPath(packageName, library));
+	      }
+	      catch(NoSuchMethodError e)
+	      {
+	    	  throw new RuntimeException("NativeLibraryLoader: JNA too old");
+	      }
+	      loadedLibraries.add(library);
 	}
 
 	public synchronized static void loadJNILibraryFromClassPath(
@@ -137,4 +144,5 @@ public class NativeLibraryLoader {
 	public static boolean isX86_64() {
 		return System.getProperty("os.arch").contains("64");
 	}
+	   
 }

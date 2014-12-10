@@ -7,6 +7,7 @@
 #include <limits>
 #include <cstring>
 #include <cmath>
+#define CLASS_DECLSPEC    __declspec(dllexport)
 
 extern "C"
 {
@@ -38,7 +39,7 @@ extern "C"
 
 	int nvar=-1, ne=-1, ni=-1;
 
-	void initializeNative (int _nvar, int _ne, int _ni)
+	CLASS_DECLSPEC void initializeNative (int _nvar, int _ne, int _ni)
 	{
 		nvar = _nvar;
 		ne = _ne;
@@ -71,7 +72,7 @@ extern "C"
 	}
 
 
-	double solveNative(double* _G, double* _g0, double* _CE, double* _ce0, double* _CI, double* _ci0, double* _x, int* iter, char* errMsg)
+	CLASS_DECLSPEC double solveNative(double* _G, double* _g0, double* _CE, double* _ce0, double* _CI, double* _ci0, double* _x, int* iter, char* errMsg)
 	{
 
 		if(nvar<0 || ne<0 || ni<0)

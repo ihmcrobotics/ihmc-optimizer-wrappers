@@ -3,11 +3,14 @@
 #include <iostream>
 #include <limits>
 
+#define CLASS_DECLSPEC    __declspec(dllexport)
 extern "C"
 {
+   
+
 	qpOASES::SQProblem *qp=NULL;
 	qpOASES::Options *options=NULL;
-	void initializeC(int nvar, int ncon)
+	CLASS_DECLSPEC void initializeC(int nvar, int ncon)
 	{
 		if(qp) delete qp;
 		qp = new qpOASES::SQProblem(nvar, ncon,qpOASES::HST_SEMIDEF);
@@ -30,7 +33,7 @@ extern "C"
 	 *	     lb <=  x <= ub
 	 *
 	 */
-	int hotstartC(double*H, double* g, double* A, double* lb, double* ub, double* lbA, double* ubA, int* nWSR, double* cputime, double* x, double *objVal)
+	CLASS_DECLSPEC int hotstartC(double*H, double* g, double* A, double* lb, double* ub, double* lbA, double* ubA, int* nWSR, double* cputime, double* x, double *objVal)
 	{
 		if(!qp)
 		{
@@ -53,7 +56,7 @@ extern "C"
 		return 0;
 	}
 
-	int solveC(double*H, double* g, double* A, double* lb, double* ub, double* lbA, double* ubA, int* nWSR, double* cputime, double* x, double *objVal)
+	CLASS_DECLSPEC int solveC(double*H, double* g, double* A, double* lb, double* ub, double* lbA, double* ubA, int* nWSR, double* cputime, double* x, double *objVal)
 	{
 
 		if(!qp)
