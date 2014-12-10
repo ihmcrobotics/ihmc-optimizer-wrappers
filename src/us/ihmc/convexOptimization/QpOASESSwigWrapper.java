@@ -26,6 +26,7 @@ public class QpOASESSwigWrapper extends AbstractQpOASESWrapper {
 			throw new RuntimeException(ret.name());
 		
 		ret = qProblem.getPrimalSolution(x);
+		objVal[0]=qProblem.getObjVal();
 		if(ret!=returnValue.SUCCESSFUL_RETURN)
 			throw new RuntimeException(ret.name());
 		return 0;

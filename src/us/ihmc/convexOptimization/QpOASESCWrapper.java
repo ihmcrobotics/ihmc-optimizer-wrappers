@@ -32,7 +32,9 @@ public class QpOASESCWrapper extends AbstractQpOASESWrapper{
 	protected int solveNative(double[] H, double[] g, double[] A, double[] lb,
 			double[] ub, double[] lbA, double[] ubA, int[] nWSR,
 			double[] cputime, double[] x, double[] objVal) {
-		return solveC(H, g, A, lb, ub, lbA, ubA, nWSR, cputime, x, objVal);
+		int ret = solveC(H, g, A, lb, ub, lbA, ubA, nWSR, cputime, x, objVal);
+		System.out.println("cputimeC:"+cputime[0]);
+		return ret;
 	}
 
 	@Override
