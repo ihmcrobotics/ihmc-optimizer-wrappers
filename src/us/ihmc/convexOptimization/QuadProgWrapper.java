@@ -7,7 +7,7 @@ import org.ejml.data.DenseMatrix64F;
 
 public class QuadProgWrapper {
     static {
-        NativeLibraryLoader.loadLibraryFromClassPath(NativeLibraryLoader.getOSDependentName("uQuadProg"),
+        NativeLibraryLoader.loadJNALibraryFromClassPath("us.ihmc.convexOptimization",NativeLibraryLoader.getOSDependentName("uQuadProg"),
                 QuadProgWrapper.class);
     }
 

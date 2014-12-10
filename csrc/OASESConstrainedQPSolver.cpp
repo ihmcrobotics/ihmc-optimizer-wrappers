@@ -7,7 +7,7 @@ extern "C"
 {
 	qpOASES::SQProblem *qp=NULL;
 	qpOASES::Options *options=NULL;
-	void initializeNative (int nvar, int ncon)
+	void initializeC(int nvar, int ncon)
 	{
 		if(qp) delete qp;
 		qp = new qpOASES::SQProblem(nvar, ncon,qpOASES::HST_SEMIDEF);
@@ -30,7 +30,7 @@ extern "C"
 	 *	     lb <=  x <= ub
 	 *
 	 */
-	int hotstartNative(double*H, double* g, double* A, double* lb, double* ub, double* lbA, double* ubA, int* nWSR, double* cputime, double* x, double *objVal)
+	int hotstartC(double*H, double* g, double* A, double* lb, double* ub, double* lbA, double* ubA, int* nWSR, double* cputime, double* x, double *objVal)
 	{
 		if(!qp)
 		{
@@ -53,7 +53,7 @@ extern "C"
 		return 0;
 	}
 
-	int solveNative(double*H, double* g, double* A, double* lb, double* ub, double* lbA, double* ubA, int* nWSR, double* cputime, double* x, double *objVal)
+	int solveC(double*H, double* g, double* A, double* lb, double* ub, double* lbA, double* ubA, int* nWSR, double* cputime, double* x, double *objVal)
 	{
 
 		if(!qp)

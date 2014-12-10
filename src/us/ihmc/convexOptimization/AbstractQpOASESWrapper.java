@@ -6,7 +6,15 @@ import org.ejml.data.DenseMatrix64F;
 import org.ejml.ops.CommonOps;
 //~--- JDK imports ------------------------------------------------------------
 
-public class QpOASESWrapper {
+public abstract class AbstractQpOASESWrapper {
+	
+    protected abstract int solveNative(double[] H, double[] g, double[] A, double[] lb, double[] ub, double[] lbA,
+            double[] ubA, int[] nWSR, double[] cputime, double[] x, double[] objVal);
+
+    protected abstract int hotstartNative(double[] H, double[] g, double[] A, double[] lb, double[] ub, double[] lbA,
+            double[] ubA, int[] nWSR, double[] cputime, double[] x, double[] objVal);
+
+    protected abstract void initializeNative(int nvar, int ncon);
 
     /*
      *  minimizex (1/2)x'Qx+f'x
@@ -14,10 +22,6 @@ public class QpOASESWrapper {
      *  Ain x <= bin
      *  Aeq x = beq,
      */
-    static {
-        NativeLibraryLoader.loadLibraryFromClassPath(
-            NativeLibraryLoader.getOSDependentName("OASESConstrainedQPSolver"), QpOASESWrapper.class);
-    }
 
     double[]               cputime = new double[1];
     int[]                  nWSR    = new int[1];
@@ -28,7 +32,7 @@ public class QpOASESWrapper {
     int                    nvar, ncon;
     boolean                coldStart;
 
-    public QpOASESWrapper() {
+    public AbstractQpOASESWrapper() {
         this(1, 1);
     }
 
@@ -37,31 +41,9 @@ public class QpOASESWrapper {
      * @param nvar - hint the number of variables
      * @param ncon - hint the number of constraints
      */
-    public QpOASESWrapper(int nvar, int ncon) {
+    public AbstractQpOASESWrapper(int nvar, int ncon) {
         initialize(nvar, ncon);
     }
-
-    private static native void initializeNative(int nvar, int ncon);
-
-    /**
-     *
-     * min 0.5*x'Hx + g'x
-     *
-     * st lbA <= Ax <= ubA
-     *     lb <= x <= ub
-     *
-     * matrices are row-major
-     *
-     * @param nWSR - number of working set re-calculation
-     * @param cputime - maximum cputime, null
-     * @param x - initial and return variable to be optimized
-     * @return returnCode from C-API
-     */
-    public static native int solveNative(double[] H, double[] g, double[] A, double[] lb, double[] ub, double[] lbA,
-            double[] ubA, int[] nWSR, double[] cputime, double[] x, double[] objVal);
-
-    public static native int hotstartNative(double[] H, double[] g, double[] A, double[] lb, double[] ub, double[] lbA,
-            double[] ubA, int[] nWSR, double[] cputime, double[] x, double[] objVal);
 
     private void initialize(int nvar, int ncon) {
         if ((this.nvar != nvar) || (this.ncon != ncon)) {
@@ -141,20 +123,5 @@ public class QpOASESWrapper {
         return objVal[0];
     }
 
-    public static void main(String[] arg) {
-        int            nin    = 1,
-                       neq    = 1,
-                       nv     = 2;
-        DenseMatrix64F Q      = new DenseMatrix64F(nv, nv, true, 1, 0, 0, 1);
-        DenseMatrix64F f      = new DenseMatrix64F(nv, 1, true, 1, 0);
-        DenseMatrix64F Aeq    = new DenseMatrix64F(neq, nv, true, 1, 1);
-        DenseMatrix64F beq    = new DenseMatrix64F(neq, 1, true, 0);
-        DenseMatrix64F Ain    = new DenseMatrix64F(nin, nv, true, 2, 1);
-        DenseMatrix64F bin    = new DenseMatrix64F(nin, 1, true, 0);
-        DenseMatrix64F x      = new DenseMatrix64F(nv, 1, true, -1, 1);
-        QpOASESWrapper solver = new QpOASESWrapper();
-        int            iter   = solver.solve(Q, f, Aeq, beq, Ain, bin, null, null, x, true);
 
-        System.out.println("xopt=" + x + "iter=" + iter + " optVal=" + solver.getOptVal());
-    }
 }
