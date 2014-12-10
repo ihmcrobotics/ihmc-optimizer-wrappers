@@ -1,3 +1,11 @@
 /build/
 /bin/
 /.settings
+/generated-src/
+/csrc/qpOASES/
+/csrc/quadprog/
+/.gradle
+/.classpath
+/.gradle
+/.project
+/.gitignore
