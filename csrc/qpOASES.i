@@ -1,12 +1,8 @@
 %module qpOASES
 
 %{
-//#define SWIG_FILE_WITH_INIT
-//#define SWIG_JAVA_EXTRA_NATIVE_CONTAINERS
-
 #include "qpOASES.hpp"
 using namespace qpOASES;
-
 %}
 
 %include "std_string.i"
@@ -14,12 +10,6 @@ using namespace qpOASES;
 %include "enums.swg"
 
 
-
-/*
-%include "carrays.i"
-%array_class(double, doubleArray);
-%array_class(int, intArray);
-*/
 
 %include "typemaps.i"
 %include "arrays_java.i"
@@ -32,26 +22,29 @@ using namespace qpOASES;
 %apply float[] {float*};
 %apply long[] {unsigned long*};
 
-
+%ignore qpOASES::Matrix::full;
+%ignore qpOASES::Matrix::createDiagInfo;
+%ignore dgemm_;
+%ignore sgemm_;
+%ignore dsyr_;
+%ignore ssyr_;
+%ignore dsyr2_;
+%ignore ssyr2_;
+%ignore dpotrf_;
+%ignore spotrf_;
 
 %include "qpOASES/Types.hpp"
 %include <qpOASES/MessageHandling.hpp>
-
-namespace qpOASES {
-   enum returnValue;
-}
-
-/*%include "qpOASES/Bounds.hpp"
-%include <qpOASES/MessageHandling.hpp>
+%include <qpOASES/Indexlist.hpp>
+%include <qpOASES/Matrices.hpp>
+%include <qpOASES/SubjectTo.hpp>
+%include "qpOASES/Bounds.hpp"
 %include <qpOASES/Constraints.hpp>
 %include <qpOASES/ConstraintProduct.hpp>
-%include "qpOASES/Bounds.hpp"*/
-
 %include "qpOASES/Options.hpp"
 %include "qpOASES/QProblemB.hpp"
 %include "qpOASES/QProblem.hpp"
 %include "qpOASES/SQProblem.hpp"
-
 
 
 
