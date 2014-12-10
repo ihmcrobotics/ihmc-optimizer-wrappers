@@ -32,9 +32,9 @@ add_library(qpOASES ${qpOASES_SOURCE})
 add_library(OASESConstrainedQPSolver SHARED  "OASESConstrainedQPSolver.cpp")
 target_link_libraries(OASESConstrainedQPSolver qpOASES)
 install(TARGETS  OASESConstrainedQPSolver RUNTIME DESTINATION ${CMAKE_SOURCE_DIR}/resources/${IHMC_PATH} LIBRARY DESTINATION ${CMAKE_SOURCE_DIR}/resources/${IHMC_PATH})
-if(DARWIN)
+if(APPLE)
 	set_target_properties(OASESConstrainedQPSolver PROPERTIES SUFFIX ".jnilib")
-endif(DARWIN)
+endif(APPLE)
 
 ############# qpOASES - SWIG #############
 
@@ -59,6 +59,6 @@ install(TARGETS qpOASESSwig DESTINATION ${CMAKE_SOURCE_DIR}/resources/${IHMC_PAT
 include_directories(quadprog/src)
 add_library(uQuadProg SHARED quadprog/src/uQuadProg++.cc QuadProgSolver.cpp)
 INSTALL(TARGETS  uQuadProg RUNTIME DESTINATION ${CMAKE_SOURCE_DIR}/resources/${IHMC_PATH} LIBRARY DESTINATION ${CMAKE_SOURCE_DIR}/resources/${IHMC_PATH})
-if(DARWIN)
+if(APPLE)
 	set_target_properties(uQuadProg PROPERTIES SUFFIX ".jnilib")
-endif()
+endif(APPLE)
