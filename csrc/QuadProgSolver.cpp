@@ -7,7 +7,11 @@
 #include <limits>
 #include <cstring>
 #include <cmath>
+#ifdef _WIN32
 #define CLASS_DECLSPEC    __declspec(dllexport)
+#else
+#define CLASS_DECLSPEC
+#endif
 
 extern "C"
 {

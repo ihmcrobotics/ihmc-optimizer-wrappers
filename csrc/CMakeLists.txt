@@ -16,16 +16,21 @@ FIND_PACKAGE(SWIG REQUIRED)
 set( IHMC_PACK us.ihmc.convexOptimization)
 set( IHMC_PATH us/ihmc/convexOptimization)
 
+if(UNIX)
+SET(CMAKE_CXX_FLAGS "-fPIC")
+SET(CMAKE_C_FLAGS "-fPIC")
+endif()
+
 include_directories(${JNI_INCLUDE_DIRS}) 
 ############## qpOASES ####################
 include_directories(qpOASES/include)
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D__NO_COPYRIGHT__")
 FILE(GLOB qpOASES_SOURCE "qpOASES/src/*.cpp")
-LIST(APPEND qpOASES_SOURCE "OASESConstrainedQPSolver.cpp")
 add_library(qpOASES ${qpOASES_SOURCE})
 
 ############# qpOASES - JNA ##############
-add_library(OASESConstrainedQPSolver SHARED  ${qpOASES_SOURCE})
+add_library(OASESConstrainedQPSolver SHARED  "OASESConstrainedQPSolver.cpp")
+target_link_libraries(OASESConstrainedQPSolver qpOASES)
 install(TARGETS  OASESConstrainedQPSolver RUNTIME DESTINATION ${CMAKE_SOURCE_DIR}/resources/${IHMC_PATH} LIBRARY DESTINATION ${CMAKE_SOURCE_DIR}/resources/${IHMC_PATH})
 if(DARWIN)
 	set_target_properties(OASESConstrainedQPSolver PROPERTIES SUFFIX ".jnilib")
@@ -43,7 +48,8 @@ SET_SOURCE_FILES_PROPERTIES(qpOASES.i PROPERTIES SWIG_FLAGS "-cpperraswarn")
 SET( CMAKE_SWIG_FLAGS -package ${IHMC_PACK}.qpOASES)
 SET(CMAKE_SWIG_OUTDIR ${CMAKE_SOURCE_DIR}/generated-src/${IHMC_PATH}/qpOASES)
 
-SWIG_ADD_MODULE(qpOASESSwig   java qpOASES.i ${SRC_LIST})
+SWIG_ADD_MODULE(qpOASESSwig   java qpOASES.i)
+SET_SOURCE_FILES_PROPERTIES(${SWIG_GENERATED_FILE_FULLNAME} PROPERTIES COMPILE_FLAGS "-fPIC")
 SWIG_LINK_LIBRARIES(qpOASESSwig ${JAVA_LIBRARIES}  qpOASES )
 
 install(TARGETS qpOASESSwig DESTINATION ${CMAKE_SOURCE_DIR}/resources/${IHMC_PATH})

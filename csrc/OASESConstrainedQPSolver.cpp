@@ -3,7 +3,11 @@
 #include <iostream>
 #include <limits>
 
+#ifdef _WIN32
 #define CLASS_DECLSPEC    __declspec(dllexport)
+#else
+#define CLASS_DECLSPEC
+#endif
 extern "C"
 {
    
