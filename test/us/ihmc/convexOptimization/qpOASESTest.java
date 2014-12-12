@@ -60,5 +60,10 @@ public class qpOASESTest {
 				+ " optVal=" + solverSwig.getOptVal());
 		assertArrayEquals(solX.data, x.data, epsilon);
 	}
+	
+	public static void main(String[] arg)
+	{
+		(new qpOASESTest()).testQpOASES();
+	}
 
 }

@@ -12,6 +12,10 @@ public class QpOASESSwigWrapper extends AbstractQpOASESWrapper {
 
 	SQProblem qProblem=null;
 	public QpOASESSwigWrapper() {
+		super();
+	}
+	public QpOASESSwigWrapper(int nvar, int ncon) {
+		super(nvar, ncon);
 	}
 
 	@Override

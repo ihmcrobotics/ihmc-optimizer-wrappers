@@ -94,7 +94,7 @@ public class NativeLibraryLoader {
 		File lib = new File(directory, library);
 		// if(!lib.exists()) //always overwrite
 		{
-			String fileName = packagePrefix + "/" + library;
+			String fileName = packagePrefix + library;
 			InputStream stream = NativeLibraryLoader.class.getClassLoader()
 					.getResourceAsStream(fileName);
 			if (stream == null)

@@ -6,6 +6,18 @@ public class QpOASESCWrapper extends AbstractQpOASESWrapper{
 	            NativeLibraryLoader.getOSDependentName("OASESConstrainedQPSolver"), QpOASESCWrapper.class);
 	    }
 
+	 public QpOASESCWrapper(int nvar, int ncon)
+	 {
+		 super(nvar, ncon);
+	 }
+
+	 public QpOASESCWrapper()
+	 {
+		 super();
+	 }
+	 
+	 
+	 
 	    /**
      *
      * min 0.5*x'Hx + g'x
