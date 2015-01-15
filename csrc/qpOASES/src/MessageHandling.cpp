@@ -227,8 +227,8 @@ MessageHandling::ReturnValueList returnValueList[1]; /* Do not use messages for 
 MessageHandling::MessageHandling( )
 {
 	errorVisibility   = VS_VISIBLE;
-	warningVisibility = VS_VISIBLE;
-	infoVisibility    = VS_VISIBLE;
+    warningVisibility = VS_HIDDEN;
+    infoVisibility    = VS_HIDDEN;
 
 	outputFile = stdFile;
 	errorCount = 0;
@@ -240,8 +240,8 @@ MessageHandling::MessageHandling( )
 MessageHandling::MessageHandling( FILE* _outputFile )
 {
 	errorVisibility   = VS_VISIBLE;
-	warningVisibility = VS_VISIBLE;
-	infoVisibility    = VS_VISIBLE;
+    warningVisibility = VS_HIDDEN;
+    infoVisibility    = VS_HIDDEN;
 
 	outputFile = _outputFile;
 	errorCount = 0;
@@ -405,8 +405,8 @@ returnValue MessageHandling::throwInfo(
 returnValue MessageHandling::reset( )
 {
 	setErrorVisibilityStatus(   VS_VISIBLE );
-	setWarningVisibilityStatus( VS_VISIBLE );
-	setInfoVisibilityStatus(    VS_VISIBLE );
+    setWarningVisibilityStatus( VS_HIDDEN );
+    setInfoVisibilityStatus(    VS_HIDDEN );
 
 	setOutputFile( stdFile );
 	setErrorCount( 0 );
@@ -592,7 +592,7 @@ const char* MessageHandling::getErrorCodeMessage(	const returnValue _returnValue
 
 
 /** Global message handler for all qpOASES modules.*/
-static MessageHandling globalMessageHandler( stdFile,VS_VISIBLE,VS_VISIBLE,VS_VISIBLE );
+static MessageHandling globalMessageHandler( stdFile,VS_VISIBLE,VS_HIDDEN,VS_HIDDEN );
 
 
 /*

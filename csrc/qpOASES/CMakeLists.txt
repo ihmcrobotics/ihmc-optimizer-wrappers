@@ -121,28 +121,6 @@ INSTALL(DIRECTORY include/qpOASES
   FILES_MATCHING PATTERN "*.hpp"
   PATTERN ".svn" EXCLUDE)
 
-############################################################
-######################### examples #########################
-############################################################
-# compile qpOASES examples
-SET(EXAMPLE_NAMES
-    example1
-    example1a
-    example1b
-    example2
-    example3
-    example3b
-    example4
-    example5
-    exampleLP
-    qrecipe
-)
-
-FOREACH(ELEMENT ${EXAMPLE_NAMES})
-    ADD_EXECUTABLE(${ELEMENT} examples/${ELEMENT}.cpp)
-    TARGET_LINK_LIBRARIES(${ELEMENT} qpOASES)
-ENDFOREACH(ELEMENT ${EXAMPLE_NAMES})
-
 
 ##
 ##   end of file
