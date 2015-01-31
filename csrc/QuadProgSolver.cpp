@@ -48,7 +48,7 @@ extern "C"
 		nvar = _nvar;
 		ne = _ne;
 		ni = _ni;
-		std::cout << "Initialize QuadProg (nvar ne ni) = " << nvar << " " << ne << " " << ni << std::endl;
+		//std::cout << "Initialize QuadProg (nvar ne ni) = " << nvar << " " << ne << " " << ni << std::endl;
 
 	}
 
