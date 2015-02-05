@@ -25,7 +25,7 @@ public class NativeLibraryLoader {
 
 	/* these are tailored with CMake default dynamic library names */
 	private static String get_OSX_MAC(String baseName) {
-		return "lib" + baseName + "_rel.jnilib";
+		return "lib" + baseName + "_rel.dylib";
 	}
 
 	private static String get_LINUX_64(String baseName) {
