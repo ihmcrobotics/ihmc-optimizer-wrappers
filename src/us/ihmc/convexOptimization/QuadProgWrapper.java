@@ -5,10 +5,14 @@ package us.ihmc.convexOptimization;
 import org.ejml.data.DenseMatrix64F;
 //~--- JDK imports ------------------------------------------------------------
 
+import com.sun.jna.Native;
+
+import us.ihmc.tools.nativelibraries.NativeLibraryLoader;
+
 public class QuadProgWrapper {
     static {
-        NativeLibraryLoader.loadJNALibraryFromClassPath("us.ihmc.convexOptimization",NativeLibraryLoader.getOSDependentName("uQuadProg"),
-                QuadProgWrapper.class);
+       String library = NativeLibraryLoader.extractLibrary("us.ihmc.convexOptimization", "uQuadProg_rel");
+       Native.register(QuadProgWrapper.class, library);
     }
 
     int[]   nIteration = new int[1];

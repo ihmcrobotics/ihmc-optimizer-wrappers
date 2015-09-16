@@ -1,10 +1,15 @@
 package us.ihmc.convexOptimization;
 
+import com.sun.jna.Native;
+
+import us.ihmc.tools.nativelibraries.NativeLibraryLoader;
+
 public class QpOASESCWrapper extends AbstractQpOASESWrapper{
-	 static {
-	        NativeLibraryLoader.loadJNALibraryFromClassPath("us.ihmc.convexOptimization",
-	            NativeLibraryLoader.getOSDependentName("OASESConstrainedQPSolver"), QpOASESCWrapper.class);
-	    }
+   static
+   {
+      String library = NativeLibraryLoader.extractLibrary("us.ihmc.convexOptimization", "OASESConstrainedQPSolver_rel");
+      Native.register(QpOASESCWrapper.class, library);
+   }
 
 	 public QpOASESCWrapper(int nvar, int ncon)
 	 {

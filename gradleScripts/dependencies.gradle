@@ -1,6 +1,6 @@
 dependencies {
-	compile group: 'junit', name: 'junit', version: '4.11'
-	['core','complex','equation','experimental'].each{String id -> compile group: 'us.ihmc.thirdparty', name: 'ejml-' + id, version: '0.27-internal'}
+	testCompile group: 'junit', name: 'junit', version: '4.11'
+	compile group: 'org.ejml', name: 'all', version: '0.28'
+    compile group: 'us.ihmc', name: 'IHMCNativeLibraryLoader', version: '1.0'
 	compile group: 'net.java.dev.jna', name: 'jna', version: '4.1.0' 
-	//compile group: 'org.tmatesoft.svnkit', name: 'svnkit', version: '1.8.5' // for testing only
 }

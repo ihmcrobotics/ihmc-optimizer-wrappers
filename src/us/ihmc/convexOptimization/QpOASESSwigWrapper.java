@@ -1,13 +1,12 @@
 package us.ihmc.convexOptimization;
 
 import us.ihmc.convexOptimization.qpOASES.SQProblem;
-import us.ihmc.convexOptimization.qpOASES.qpOASESJNI;
 import us.ihmc.convexOptimization.qpOASES.returnValue;
+import us.ihmc.tools.nativelibraries.NativeLibraryLoader;
 
 public class QpOASESSwigWrapper extends AbstractQpOASESWrapper {
 	static{
-	   NativeLibraryLoader.loadJNILibraryFromClassPath("us.ihmc.convexOptimization",
-	            NativeLibraryLoader.getOSDependentName("qpOASESSwig"));
+	   NativeLibraryLoader.loadLibrary("us.ihmc.convexOptimization", "qpOASESSwig_rel");
 	}
 
 	SQProblem qProblem=null;
