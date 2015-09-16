@@ -6,10 +6,10 @@ import org.ejml.data.DenseMatrix64F;
 import org.ejml.ops.CommonOps;
 import org.junit.Test;
 
-public class qpOASESTest {
+public class QPSolversTest {
 
 	@Test
-	public void testQpOASES() {
+	public void simpleTests() {
 		//setup problem
 		int nin = 1, neq = 1, nv = 2;
 		DenseMatrix64F Q = new DenseMatrix64F(nv, nv, true, 1, 0, 0, 1);
@@ -63,7 +63,7 @@ public class qpOASESTest {
 	
 	public static void main(String[] arg)
 	{
-		(new qpOASESTest()).testQpOASES();
+		(new QPSolversTest()).simpleTests();
 	}
 
 }

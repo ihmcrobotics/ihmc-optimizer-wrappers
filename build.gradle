@@ -4,7 +4,7 @@ apply from: 'gradleScripts/util.gradle'
 
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
-version = '0.0.13'
+version = '0.0.21'
 
 setupDefaultDirectoryStructure()
 
@@ -39,6 +39,7 @@ publishing {
 			groupId 'us.ihmc'
 			artifactId 'IHMCOptimizerWrappers'
 			version "$version"
+			version '0.0.20'
 			from components.java
 		
 		

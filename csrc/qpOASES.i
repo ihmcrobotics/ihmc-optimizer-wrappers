@@ -46,5 +46,28 @@ using namespace qpOASES;
 %include "qpOASES/QProblem.hpp"
 %include "qpOASES/SQProblem.hpp"
 
+%inline %{
 
+namespace qpOASES{
+
+    returnValue initAndSolve( QProblem* problem,
+                              const real_t* const H_,  const real_t* g_, const real_t*  A_,
+                              const real_t*  lb_,  const real_t*  ub_,  const real_t*  lbA_, const real_t*  ubA_,
+                              int nWSR_, const real_t* const xOpt )
+    {
+        int nWSR = nWSR_;
+        return problem->init( H_, g_, A_, lb_, ub_, lbA_, ubA_, nWSR, 0, xOpt, 0, 0, 0);
+    }
+
+    returnValue initAndSolve( QProblem* problem,
+                              const real_t* const H_,  const real_t* g_,
+                              const real_t*  lb_,  const real_t*  ub_,
+                              int nWSR_, const real_t* const xOpt )
+    {
+        int nWSR = nWSR_;
+        return problem->init( H_, g_, 0, lb_, ub_, 0, 0, nWSR, 0, xOpt, 0, 0, 0);
+    }
+}
+
+%}
 

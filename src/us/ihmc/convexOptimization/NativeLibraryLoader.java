@@ -4,7 +4,12 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.DigestInputStream;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashSet;
+
+import javax.xml.bind.DatatypeConverter;
 
 import com.sun.jna.Native;
 
@@ -20,7 +25,7 @@ public class NativeLibraryLoader {
 
 	/* these are tailored with CMake default dynamic library names */
 	private static String get_OSX_MAC(String baseName) {
-		return "lib" + baseName + "_rel.jnilib";
+		return "lib" + baseName + "_rel.dylib";
 	}
 
 	private static String get_LINUX_64(String baseName) {
@@ -91,40 +96,53 @@ public class NativeLibraryLoader {
 		if (!directory.exists()) {
 			directory.mkdirs();
 		}
-		File lib = new File(directory, library);
-		// if(!lib.exists()) //always overwrite
-		{
 			String fileName = packagePrefix + library;
 			InputStream stream = NativeLibraryLoader.class.getClassLoader()
 					.getResourceAsStream(fileName);
 			if (stream == null)
 				throw new RuntimeException("Library not found:" + fileName);
-			writeStreamToFile(stream, lib);
+			File lib=writeStreamToFile(stream, directory);
 
 			try {
 				stream.close();
 			} catch (IOException e) {
 			}
-		}
 
 		loadedLibraries.add(library);
 		return lib.getAbsolutePath();
 	}
 
-	public static void writeStreamToFile(InputStream stream, File file) {
+	public static File writeStreamToFile(InputStream stream, File directory) {
 		try {
+		   MessageDigest messageDigest = MessageDigest.getInstance("SHA-1");
+		   DigestInputStream digestStream = new DigestInputStream(stream, messageDigest);
+		   File file = File.createTempFile(".NativeLibraryLoader", null, directory);
+		   
 			FileOutputStream out = new FileOutputStream(file);
 			byte[] buf = new byte[1024];
 			int len;
-			while ((len = stream.read(buf)) > 0) {
+			while ((len = digestStream.read(buf)) > 0) {
 				out.write(buf, 0, len);
 			}
 
 			out.close();
+			
+			String filename = System.mapLibraryName(DatatypeConverter.printHexBinary(messageDigest.digest()));
+			File target = new File(directory, filename);
+			if(!target.exists())
+			{
+			   file.renameTo(target);
+			}
+			else
+			{
+			   file.delete();
+			}
+			return target;
 
-		} catch (IOException e) {
+		} catch (IOException|NoSuchAlgorithmException e) {
 			throw new RuntimeException(e);
 		}
+		
 
 	}
 
