@@ -4,7 +4,7 @@ apply from: 'gradleScripts/util.gradle'
 
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
-version = '0.0.12'
+version = '0.0.13'
 
 setupDefaultDirectoryStructure()
 
@@ -12,33 +12,67 @@ setupDefaultRepositories()
 
 setupProjectSpecificDependencies()
 
+jar {
+   manifest {
+      attributes(
+      "Created-By": "IHMC Gradle Build Script",
+      "Implementation-Title": project.name,
+      "Implementation-Version": project.version,
+      "Implementation-Vendor": "IHMC",
+      
+      "Bundle-Name": project.name,
+      "Bundle-Version": project.version,
+      "Bundle-License": "http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt",
+      "Bundle-Vendor": "IHMC",
+      "Main-Class": "us.ihmc.convexOptimization.QpOASESWrapper")
+   }
+}
+
+task sourceJar(type: Jar) {
+	from sourceSets.main.allJava
+}
+
 publishing {
 	publications {
 		mavenJava(MavenPublication) {
 
 			groupId 'us.ihmc'
 			artifactId 'IHMCOptimizerWrappers'
-			version '0.0.12'
+			version '$version'
 			from components.java
-		}
+		
+		
+		pom.withXml {
+                            asNode().children().last() + {
+                                resolveStrategy = Closure.DELEGATE_FIRST
+                                name 'IHMCOptimizerWrappers'
+                                url 'https://stash.ihmc.us/projects/JNI/repos/ihmcoptimizerwrappers/'
+                                licenses {
+                                    license {
+                                        name 'GNU Lesser General Public License, version 2.1'
+                                        url 'http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt'
+                                        distribution 'repo'
+                                    }
+                                }
+                            }
+
+                        }
+			
+			artifact sourceJar {
+				classifier "sources"
+			}
+                }
 
 	}
 
 	repositories {
 		maven {
 			credentials {	
-				username "${nexus_username}"
-				password "${nexus_password}"
+				username project.hasProperty('nexus_username')?"${nexus_username}":"invalid"
+				password project.hasProperty('nexus_password')?"${nexus_password}":"invalid"
 			}
 			url "https://bengal.ihmc.us/nexus/content/repositories/releases"
 		}
 	}
 }
 
-jar {
-	manifest {
-		attributes 'Main-Class': 'us.ihmc.convexOptimization.QpOASESWrapper'
-	}
-	
-    from sourceSets.main.allSource
-}
