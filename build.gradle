@@ -38,7 +38,7 @@ publishing {
 
 			groupId 'us.ihmc'
 			artifactId 'IHMCOptimizerWrappers'
-			version '$version'
+			version "$version"
 			from components.java
 		
 		
