@@ -45,8 +45,8 @@ publishing {
 		pom.withXml {
                             asNode().children().last() + {
                                 resolveStrategy = Closure.DELEGATE_FIRST
-                                name 'IHMCOptimizerWrappers'
-                                url 'https://stash.ihmc.us/projects/JNI/repos/ihmcoptimizerwrappers/'
+                                name project.name
+                                url 'https://github.com/ihmcrobotics/ihmc-optimizer-wrappers'
                                 licenses {
                                     license {
                                         name 'GNU Lesser General Public License, version 2.1'

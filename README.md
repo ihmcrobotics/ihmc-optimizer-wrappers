@@ -1,4 +1,4 @@
-# Java wrapper for common video encoding format
+# Java wrapper for serveral optimization libraries
 
 This library wraps qpOASES C/C++ library in Java. 
 
