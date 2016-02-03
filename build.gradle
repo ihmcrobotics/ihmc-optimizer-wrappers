@@ -37,7 +37,7 @@ publishing {
 		mavenJava(MavenPublication) {
 
 			groupId 'us.ihmc'
-			artifactId 'IHMCOptimizerWrappers'
+			artifactId project.name
 			version "$version"
 			from components.java
 		
