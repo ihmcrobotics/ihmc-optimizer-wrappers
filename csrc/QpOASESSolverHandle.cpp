@@ -61,21 +61,21 @@ namespace ihmc_optimizer_wrappers
    {
       this->A = new double[this->nvar * this->ncon];
       this->x = new double[this->nvar];
-      this->hessian = new double[this->nvar * this->nvar];
-      this->gradient = new double[this->nvar];
-      this->lowerBound = new double[this->nvar];
-      this->upperBound = new double[this->nvar];
-      this->lowerBoundA = new double[this->nvar];
-      this->upperBoundA = new double[this->nvar];
+      this->H = new double[this->nvar * this->nvar];
+      this->g = new double[this->nvar];
+      this->lb = new double[this->nvar];
+      this->ub = new double[this->nvar];
+      this->lbA = new double[this->nvar];
+      this->ubA = new double[this->nvar];
 
       this->ABuffer = env->NewDirectByteBuffer(A, (jlong) (sizeof(double) * (this->nvar * this->ncon)));
       this->xBuffer = env->NewDirectByteBuffer(x, (jlong) (sizeof(double) * (this->nvar)));
-      this->hessianBuffer = env->NewDirectByteBuffer(hessian, (jlong) (sizeof(double) * (this->nvar * this->nvar)));
-      this->gradientBuffer = env->NewDirectByteBuffer(gradient, (jlong) (sizeof(double) * (this->nvar)));
-      this->lowerBoundBuffer = env->NewDirectByteBuffer(lowerBound, (jlong) (sizeof(double) * (this->nvar)));
-      this->upperBoundBuffer = env->NewDirectByteBuffer(upperBound, (jlong) (sizeof(double) * (this->nvar)));
-      this->lowerBoundABuffer = env->NewDirectByteBuffer(lowerBoundA, (jlong) (sizeof(double) * (this->nvar)));
-      this->upperBoundABuffer = env->NewDirectByteBuffer(upperBoundA, (jlong) (sizeof(double) * (this->nvar)));
+      this->HBuffer = env->NewDirectByteBuffer(H, (jlong) (sizeof(double) * (this->nvar * this->nvar)));
+      this->gBuffer = env->NewDirectByteBuffer(g, (jlong) (sizeof(double) * (this->nvar)));
+      this->lbBuffer = env->NewDirectByteBuffer(lb, (jlong) (sizeof(double) * (this->nvar)));
+      this->ubBuffer = env->NewDirectByteBuffer(ub, (jlong) (sizeof(double) * (this->nvar)));
+      this->lbABuffer = env->NewDirectByteBuffer(lbA, (jlong) (sizeof(double) * (this->nvar)));
+      this->ubABuffer = env->NewDirectByteBuffer(ubA, (jlong) (sizeof(double) * (this->nvar)));
    }
 
    jobject QpOASESSolverHandle::getABuffer()
@@ -90,43 +90,43 @@ namespace ihmc_optimizer_wrappers
 
    jobject QpOASESSolverHandle::getHessianBuffer()
    {
-      return this->hessianBuffer;
+      return this->HBuffer;
    }
 
    jobject QpOASESSolverHandle::getGradientBuffer()
    {
-      return this->gradientBuffer;
+      return this->gBuffer;
    }
 
    jobject QpOASESSolverHandle::getLowerBoundBuffer()
    {
-      return this->lowerBoundBuffer;
+      return this->lbBuffer;
    }
 
    jobject QpOASESSolverHandle::getUpperBoundBuffer()
    {
-      return this->upperBoundBuffer;
+      return this->ubBuffer;
    }
 
    jobject QpOASESSolverHandle::getLowerBoundABuffer()
    {
-      return this->lowerBoundABuffer;
+      return this->lbABuffer;
    }
 
    jobject QpOASESSolverHandle::getUpperBoundABuffer()
    {
-      return this->upperBoundABuffer;
+      return this->ubABuffer;
    }
 
    void QpOASESSolverHandle::deleteBuffers()
    {
       delete this->A;
       delete this->x;
-      delete this->hessian;
-      delete this->gradient;
-      delete this->lowerBound;
-      delete this->upperBound;
-      delete this->lowerBoundA;
-      delete this->upperBoundA;
+      delete this->H;
+      delete this->g;
+      delete this->lb;
+      delete this->ub;
+      delete this->lbA;
+      delete this->ubA;
    }
 }

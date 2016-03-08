@@ -49,12 +49,12 @@ namespace ihmc_optimizer_wrappers
       // Quadratic Program formulation data
       double *A;
       double *x;
-      double *hessian;
-      double *gradient;
-      double *lowerBound;
-      double *upperBound;
-      double *lowerBoundA;
-      double *upperBoundA;
+      double *H;
+      double *g;
+      double *lb;
+      double *ub;
+      double *lbA;
+      double *ubA;
 //      double *numberOfWorkingSetChanges;
 //      double *cpuTime;
 //      double *objVal;
@@ -62,12 +62,12 @@ namespace ihmc_optimizer_wrappers
       // Quadratic Program Java direct byte buffers, for getters.
       jobject ABuffer;
       jobject xBuffer;
-      jobject hessianBuffer;
-      jobject gradientBuffer;
-      jobject lowerBoundBuffer;
-      jobject upperBoundBuffer;
-      jobject lowerBoundABuffer;
-      jobject upperBoundABuffer;
+      jobject HBuffer;
+      jobject gBuffer;
+      jobject lbBuffer;
+      jobject ubBuffer;
+      jobject lbABuffer;
+      jobject ubABuffer;
 
       void deleteBuffers();
    };

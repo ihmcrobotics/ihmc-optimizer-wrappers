@@ -62,21 +62,21 @@ public class QpOASESJNISolver extends AbstractQpOASESWrapper
 
    private native long createSolver(int hessianTypeOrdinal, int solverOptionOrdinal);
 
-   private native ByteBuffer getABuffer(long solverID);
+   private native ByteBuffer get_A_Buffer(long solverID);
 
-   private native ByteBuffer getXBuffer(long solverID);
+   private native ByteBuffer get_x_Buffer(long solverID);
 
-   private native ByteBuffer getHessianBuffer(long solverID);
+   private native ByteBuffer get_H_Buffer(long solverID);
 
-   private native ByteBuffer getGradientBuffer(long solverID);
+   private native ByteBuffer get_g_Buffer(long solverID);
 
-   private native ByteBuffer getLowerBoundBuffer(long solverID);
+   private native ByteBuffer get_lb_Buffer(long solverID);
 
-   private native ByteBuffer getUpperBoundBuffer(long solverID);
+   private native ByteBuffer get_ub_Buffer(long solverID);
 
-   private native ByteBuffer getLowerBoundABuffer(long solverID);
+   private native ByteBuffer get_lbA_Buffer(long solverID);
 
-   private native ByteBuffer getUpperBoundABuffer(long solverID);
+   private native ByteBuffer get_ubA_Buffer(long solverID);
 
 
    @Override protected int solveNative(double[] H, double[] g, double[] A, double[] lb, double[] ub, double[] lbA, double[] ubA, int[] nWSR, double[] cputime,
