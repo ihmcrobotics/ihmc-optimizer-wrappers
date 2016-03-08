@@ -8,28 +8,34 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-
 /*
  * Class:     us_ihmc_convexOptimization_QpOASESJNISolver
  * Method:    solveJNI
- * Signature: (J)I
+ * Signature: (IDJ)I
  */
 JNIEXPORT jint JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_solveJNI
-        (JNIEnv *env, jobject object, jlong solverId)
+        (JNIEnv *env, jobject object, jint numberOfWorkingSetChanges, jdouble cpuTime, jlong solverId)
 {
    ihmc_optimizer_wrappers::QpOASESSolverHandle *solverHandle = (ihmc_optimizer_wrappers::QpOASESSolverHandle *) solverId;
+   solverHandle->setCPUTime(cpuTime);
+   solverHandle->setNumberOfWorkingSetChanges(numberOfWorkingSetChanges);
+   return solverHandle->solve();
 }
 
 /*
  * Class:     us_ihmc_convexOptimization_QpOASESJNISolver
  * Method:    hotstartJNI
- * Signature: (J)I
+ * Signature: (IDJ)I
  */
 JNIEXPORT jint JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_hotstartJNI
-        (JNIEnv *env, jobject object, jlong solverId)
+        (JNIEnv *env, jobject object, jint numberOfWorkingSetChanges, jdouble cpuTime, jlong solverId)
 {
    ihmc_optimizer_wrappers::QpOASESSolverHandle *solverHandle = (ihmc_optimizer_wrappers::QpOASESSolverHandle *) solverId;
+   solverHandle->setCPUTime(cpuTime);
+   solverHandle->setNumberOfWorkingSetChanges(numberOfWorkingSetChanges);
+   return solverHandle->hotstart();
 }
+
 /*
  * Class:     us_ihmc_convexOptimization_QpOASESJNISolver
  * Method:    initializeJNI
@@ -43,15 +49,20 @@ JNIEXPORT void JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_initiali
    solverHandle->setupQPOASES(nvar, ncon);
    solverHandle->setupQuadraticProgramBuffers(env);
 }
+
 /*
  * Class:     us_ihmc_convexOptimization_QpOASESJNISolver
  * Method:    createSolver
- * Signature: ()J
+ * Signature: (II)J
  */
 JNIEXPORT jlong JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_createSolver
         (JNIEnv *env, jobject object, jint hessianTypeOrdinal, jint solverTypeOrdinal)
 {
-   return (jlong) (new ihmc_optimizer_wrappers::QpOASESSolverHandle::QpOASESSolverHandle(hessianTypeOrdinal, solverTypeOrdinal));
+   ihmc_optimizer_wrappers::QpOASESSolverHandle *solverHandle = new ihmc_optimizer_wrappers::QpOASESSolverHandle(
+           hessianTypeOrdinal, solverTypeOrdinal);
+   std::cout << "Solver handle pointer " << (jlong) solverHandle << std::endl << std::flush;
+
+   return (jlong) solverHandle;
 }
 
 /*

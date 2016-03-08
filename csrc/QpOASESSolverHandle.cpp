@@ -2,10 +2,11 @@
 
 namespace ihmc_optimizer_wrappers
 {
-   QpOASESSolverHandle::QpOASESSolverHandle(int hessianTypeOrdinal, int solverOptionOrdinal) : hessianTypeOrdinal(HST_SEMIDEF_ORDINAL), solverOptionOrdinal(RELIABLE_OPTION_ORDINAL)
+   QpOASESSolverHandle::QpOASESSolverHandle(int hessianTypeOrdinal, int solverOptionOrdinal) : hessianTypeOrdinal(
+           HST_SEMIDEF_ORDINAL), solverOptionOrdinal(RELIABLE_OPTION_ORDINAL)
    {
       this->hessianTypeOrdinal = hessianTypeOrdinal;
-      this-> solverOptionOrdinal = solverOptionOrdinal;
+      this->solverOptionOrdinal = solverOptionOrdinal;
    }
 
    QpOASESSolverHandle::~QpOASESSolverHandle()
@@ -18,25 +19,20 @@ namespace ihmc_optimizer_wrappers
       this->deleteBuffers();
    }
 
-   int QpOASESSolverHandle::getNCon()
-   {
-      return this->ncon;
-   }
-
-   int QpOASESSolverHandle::getNVar()
-   {
-      return this->nvar;
-   }
-
    void QpOASESSolverHandle::setupQPOASES(int nvar, int ncon)
    {
       this->nvar = nvar;
       this->ncon = ncon;
 
-      this->sqProblem = new qpOASES::SQProblem(this->nvar, this->ncon, static_cast<qpOASES::HessianType>(this->hessianTypeOrdinal));
+      std::cout << "Setting up QP problem" << std::endl;
+      std::cout << "ncon: " << this->ncon << " nvar: " << this->nvar << std::endl;
+      std::cout << "Hessian Type Ordinal: " << this->hessianTypeOrdinal << std::endl << std::flush;
+
+      this->sqProblem = new qpOASES::SQProblem(this->nvar, this->ncon,
+                                               static_cast<qpOASES::HessianType>(this->hessianTypeOrdinal));
       this->options = new qpOASES::Options;
 
-      switch(this->solverOptionOrdinal)
+      switch (this->solverOptionOrdinal)
       {
          case RELIABLE_OPTION_ORDINAL:
             this->options->setToReliable();
@@ -145,15 +141,16 @@ namespace ihmc_optimizer_wrappers
       delete this->ubA;
    }
 
-   int QpOASESSolverHandle::hotstart(int *numberOfWorkingSetChanges, double *cpuTime)
+   int QpOASESSolverHandle::hotstart()
    {
-      if(!this->sqProblem)
+      if (!this->sqProblem)
       {
          std::cerr << "OASES::call initializeNative() first" << std::endl;
          return -1;
       }
 
-      int qpOASESHotstartRet = this->sqProblem->hotstart(H, g, A, lb, ub, lbA, ubA, *numberOfWorkingSetChanges, cpuTime);
+      int qpOASESHotstartRet = this->sqProblem->hotstart(H, g, A, lb, ub, lbA, ubA, this->numberOfWorkingSetChanges,
+                                                         &(this->cpuTime));
       if (qpOASESHotstartRet != qpOASES::SUCCESSFUL_RETURN)
       {
          std::cerr << "OASES::hotstart failed: retVal= " << qpOASESHotstartRet << std::endl;
@@ -168,21 +165,20 @@ namespace ihmc_optimizer_wrappers
       }
 
       this->objValue = this->sqProblem->getObjVal();
-      this->numberOfWorkingSetChanges = *numberOfWorkingSetChanges;
-      this->cpuTime = *cpuTime;
 
       return 0;
    }
 
-   int QpOASESSolverHandle::solve(int *numberOfWorkingSetChanges, double *cpuTime)
+   int QpOASESSolverHandle::solve()
    {
-      if(!this->sqProblem)
+      if (!this->sqProblem)
       {
          std::cerr << "OASES::call initializeNative() first" << std::endl;
          return -1;
       }
 
-      int qpOASESInitRet = this->sqProblem->init(H, g, A, lb, ub, lbA, ubA, *numberOfWorkingSetChanges, cpuTime);
+      int qpOASESInitRet = this->sqProblem->init(H, g, A, lb, ub, lbA, ubA, this->numberOfWorkingSetChanges,
+                                                 &(this->cpuTime));
       if (qpOASESInitRet != qpOASES::SUCCESSFUL_RETURN)
       {
          std::cerr << "OASES::init failed: retVal= " << qpOASESInitRet << std::endl;
@@ -197,9 +193,22 @@ namespace ihmc_optimizer_wrappers
       }
 
       this->objValue = this->sqProblem->getObjVal();
-      this->numberOfWorkingSetChanges = *numberOfWorkingSetChanges;
-      this->cpuTime = *cpuTime;
 
       return 0;
+   }
+
+   void QpOASESSolverHandle::setNumberOfWorkingSetChanges(int numberOfWorkingSetChanges)
+   {
+      this->numberOfWorkingSetChanges = numberOfWorkingSetChanges;
+   }
+
+   void QpOASESSolverHandle::setCPUTime(double cpuTime)
+   {
+      this->cpuTime = cpuTime;
+   }
+
+   void QpOASESSolverHandle::setObjValue(double objValue)
+   {
+      this->objValue = objValue;
    }
 }

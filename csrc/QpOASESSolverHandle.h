@@ -22,28 +22,44 @@ namespace ihmc_optimizer_wrappers
    {
     public:
       QpOASESSolverHandle(int hessianTypeOrdinal, int solverOptionOrdinal);
+
       ~QpOASESSolverHandle();
 
-      int hotstart(int *numberOfWorkingSetChanges, double *cpuTime);
-      int solve(int *numberOfWorkingSetChanges, double *cpuTime);
+      int hotstart();
 
-      int getNVar();
-      int getNCon();
+      int solve();
+
       void setupQPOASES(int nvar, int ncon);
+
       void setupQuadraticProgramBuffers(JNIEnv *env);
 
       jobject getABuffer();
+
       jobject getXBuffer();
+
       jobject getHessianBuffer();
+
       jobject getGradientBuffer();
+
       jobject getLowerBoundBuffer();
+
       jobject getUpperBoundBuffer();
+
       jobject getLowerBoundABuffer();
+
       jobject getUpperBoundABuffer();
 
       int getNumberOfWorkingSetChanges();
+
       double getCPUTime();
+
       double getObjValue();
+
+      void setNumberOfWorkingSetChanges(int numberOfWorkingSetChanges);
+
+      void setCPUTime(double cpuTime);
+
+      void setObjValue(double objValue);
 
     private:
       int hessianTypeOrdinal;
