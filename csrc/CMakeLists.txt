@@ -36,6 +36,14 @@ if(APPLE)
 	set_target_properties(OASESConstrainedQPSolver PROPERTIES SUFFIX ".dylib")
 endif(APPLE)
 
+############# qpOASES - JNI w/ Objects ##############
+add_library(IHMCOASESConstrainedQPSolver SHARED  "QpOASESJNISolver.cpp" "QpOASESSolverHandle.cpp")
+target_link_libraries(IHMCOASESConstrainedQPSolver qpOASES)
+install(TARGETS  IHMCOASESConstrainedQPSolver RUNTIME DESTINATION ${CMAKE_SOURCE_DIR}/resources/${IHMC_PATH} LIBRARY DESTINATION ${CMAKE_SOURCE_DIR}/resources/${IHMC_PATH})
+if(APPLE)
+	set_target_properties(IHMCOASESConstrainedQPSolver PROPERTIES SUFFIX ".dylib")
+endif(APPLE)
+
 ############# qpOASES - SWIG #############
 
 INCLUDE(${SWIG_USE_FILE})
