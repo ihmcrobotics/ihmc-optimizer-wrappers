@@ -10,18 +10,18 @@ extern "C" {
 /*
  * Class:     us_ihmc_convexOptimization_QpOASESJNISolver
  * Method:    solveJNI
- * Signature: (J)I
+ * Signature: (IDJ)I
  */
 JNIEXPORT jint JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_solveJNI
-        (JNIEnv *, jobject, jlong);
+        (JNIEnv *, jobject, jint, jdouble, jlong);
 
 /*
  * Class:     us_ihmc_convexOptimization_QpOASESJNISolver
  * Method:    hotstartJNI
- * Signature: (J)I
+ * Signature: (IDJ)I
  */
 JNIEXPORT jint JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_hotstartJNI
-        (JNIEnv *, jobject, jlong);
+        (JNIEnv *, jobject, jint, jdouble, jlong);
 
 /*
  * Class:     us_ihmc_convexOptimization_QpOASESJNISolver
@@ -44,7 +44,7 @@ JNIEXPORT jlong JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_createS
  * Method:    get_A_Buffer
  * Signature: (J)Ljava/nio/ByteBuffer;
  */
-JNIEXPORT jobject JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_get_A_Buffer
+JNIEXPORT jobject JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_get_1A_1Buffer
         (JNIEnv *, jobject, jlong);
 
 /*
@@ -52,7 +52,7 @@ JNIEXPORT jobject JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_get_A
  * Method:    get_x_Buffer
  * Signature: (J)Ljava/nio/ByteBuffer;
  */
-JNIEXPORT jobject JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_get_x_Buffer
+JNIEXPORT jobject JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_get_1x_1Buffer
         (JNIEnv *, jobject, jlong);
 
 /*
@@ -60,7 +60,7 @@ JNIEXPORT jobject JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_get_x
  * Method:    get_H_Buffer
  * Signature: (J)Ljava/nio/ByteBuffer;
  */
-JNIEXPORT jobject JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_get_H_Buffer
+JNIEXPORT jobject JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_get_1H_1Buffer
         (JNIEnv *, jobject, jlong);
 
 /*
@@ -68,7 +68,7 @@ JNIEXPORT jobject JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_get_H
  * Method:    get_g_Buffer
  * Signature: (J)Ljava/nio/ByteBuffer;
  */
-JNIEXPORT jobject JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_get_g_Buffer
+JNIEXPORT jobject JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_get_1g_1Buffer
         (JNIEnv *, jobject, jlong);
 
 /*
@@ -76,7 +76,7 @@ JNIEXPORT jobject JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_get_g
  * Method:    get_lb_Buffer
  * Signature: (J)Ljava/nio/ByteBuffer;
  */
-JNIEXPORT jobject JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_get_lb_Buffer
+JNIEXPORT jobject JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_get_1lb_1Buffer
         (JNIEnv *, jobject, jlong);
 
 /*
@@ -84,7 +84,7 @@ JNIEXPORT jobject JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_get_l
  * Method:    get_ub_Buffer
  * Signature: (J)Ljava/nio/ByteBuffer;
  */
-JNIEXPORT jobject JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_get_ub_Buffer
+JNIEXPORT jobject JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_get_1ub_1Buffer
         (JNIEnv *, jobject, jlong);
 
 /*
@@ -92,7 +92,7 @@ JNIEXPORT jobject JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_get_u
  * Method:    get_lbA_Buffer
  * Signature: (J)Ljava/nio/ByteBuffer;
  */
-JNIEXPORT jobject JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_get_lbA_Buffer
+JNIEXPORT jobject JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_get_1lbA_1Buffer
         (JNIEnv *, jobject, jlong);
 
 /*
@@ -100,7 +100,31 @@ JNIEXPORT jobject JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_get_l
  * Method:    get_ubA_Buffer
  * Signature: (J)Ljava/nio/ByteBuffer;
  */
-JNIEXPORT jobject JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_get_ubA_Buffer
+JNIEXPORT jobject JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_get_1ubA_1Buffer
+        (JNIEnv *, jobject, jlong);
+
+/*
+ * Class:     us_ihmc_convexOptimization_QpOASESJNISolver
+ * Method:    getNumberOfWorkingSetChangesFromNative
+ * Signature: (J)I
+ */
+JNIEXPORT jint JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_getNumberOfWorkingSetChangesFromNative
+        (JNIEnv *, jobject, jlong);
+
+/*
+ * Class:     us_ihmc_convexOptimization_QpOASESJNISolver
+ * Method:    getCPUTimeFromNative
+ * Signature: (J)D
+ */
+JNIEXPORT jdouble JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_getCPUTimeFromNative
+        (JNIEnv *, jobject, jlong);
+
+/*
+ * Class:     us_ihmc_convexOptimization_QpOASESJNISolver
+ * Method:    getObjValueFromNative
+ * Signature: (J)D
+ */
+JNIEXPORT jdouble JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_getObjValueFromNative
         (JNIEnv *, jobject, jlong);
 
 #ifdef __cplusplus

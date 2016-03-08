@@ -24,6 +24,9 @@ namespace ihmc_optimizer_wrappers
       QpOASESSolverHandle(int hessianTypeOrdinal, int solverOptionOrdinal);
       ~QpOASESSolverHandle();
 
+      int hotstart(int *numberOfWorkingSetChanges, double *cpuTime);
+      int solve(int *numberOfWorkingSetChanges, double *cpuTime);
+
       int getNVar();
       int getNCon();
       void setupQPOASES(int nvar, int ncon);
@@ -38,11 +41,16 @@ namespace ihmc_optimizer_wrappers
       jobject getLowerBoundABuffer();
       jobject getUpperBoundABuffer();
 
+      int getNumberOfWorkingSetChanges();
+      double getCPUTime();
+      double getObjValue();
+
     private:
       int hessianTypeOrdinal;
       int solverOptionOrdinal;
       int nvar;
       int ncon;
+
       qpOASES::SQProblem *sqProblem;
       qpOASES::Options *options;
 
@@ -68,6 +76,10 @@ namespace ihmc_optimizer_wrappers
       jobject ubBuffer;
       jobject lbABuffer;
       jobject ubABuffer;
+
+      int numberOfWorkingSetChanges;
+      double cpuTime;
+      double objValue;
 
       void deleteBuffers();
    };

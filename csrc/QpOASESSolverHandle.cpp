@@ -118,6 +118,21 @@ namespace ihmc_optimizer_wrappers
       return this->ubABuffer;
    }
 
+   int QpOASESSolverHandle::getNumberOfWorkingSetChanges()
+   {
+      return this->numberOfWorkingSetChanges;
+   }
+
+   double QpOASESSolverHandle::getCPUTime()
+   {
+      return this->cpuTime;
+   }
+
+   double QpOASESSolverHandle::getObjValue()
+   {
+      return this->objValue;
+   }
+
    void QpOASESSolverHandle::deleteBuffers()
    {
       delete this->A;
@@ -128,5 +143,63 @@ namespace ihmc_optimizer_wrappers
       delete this->ub;
       delete this->lbA;
       delete this->ubA;
+   }
+
+   int QpOASESSolverHandle::hotstart(int *numberOfWorkingSetChanges, double *cpuTime)
+   {
+      if(!this->sqProblem)
+      {
+         std::cerr << "OASES::call initializeNative() first" << std::endl;
+         return -1;
+      }
+
+      int qpOASESHotstartRet = this->sqProblem->hotstart(H, g, A, lb, ub, lbA, ubA, *numberOfWorkingSetChanges, cpuTime);
+      if (qpOASESHotstartRet != qpOASES::SUCCESSFUL_RETURN)
+      {
+         std::cerr << "OASES::hotstart failed: retVal= " << qpOASESHotstartRet << std::endl;
+         return qpOASESHotstartRet;
+      }
+
+      int qpOASESPrimalRet = this->sqProblem->getPrimalSolution(x);
+      if (qpOASESPrimalRet != qpOASES::SUCCESSFUL_RETURN)
+      {
+         std::cerr << "OASES::getPrimalSolution failed: retVal= " << qpOASESPrimalRet << std::endl;
+         return qpOASESPrimalRet;
+      }
+
+      this->objValue = this->sqProblem->getObjVal();
+      this->numberOfWorkingSetChanges = *numberOfWorkingSetChanges;
+      this->cpuTime = *cpuTime;
+
+      return 0;
+   }
+
+   int QpOASESSolverHandle::solve(int *numberOfWorkingSetChanges, double *cpuTime)
+   {
+      if(!this->sqProblem)
+      {
+         std::cerr << "OASES::call initializeNative() first" << std::endl;
+         return -1;
+      }
+
+      int qpOASESInitRet = this->sqProblem->init(H, g, A, lb, ub, lbA, ubA, *numberOfWorkingSetChanges, cpuTime);
+      if (qpOASESInitRet != qpOASES::SUCCESSFUL_RETURN)
+      {
+         std::cerr << "OASES::init failed: retVal= " << qpOASESInitRet << std::endl;
+         return qpOASESInitRet;
+      }
+
+      int qpOASESPrimalRet = this->sqProblem->getPrimalSolution(x);
+      if (qpOASESPrimalRet != qpOASES::SUCCESSFUL_RETURN)
+      {
+         std::cerr << "OASES::getPrimalSolution failed: retVal= " << qpOASESPrimalRet << std::endl;
+         return qpOASESPrimalRet;
+      }
+
+      this->objValue = this->sqProblem->getObjVal();
+      this->numberOfWorkingSetChanges = *numberOfWorkingSetChanges;
+      this->cpuTime = *cpuTime;
+
+      return 0;
    }
 }
