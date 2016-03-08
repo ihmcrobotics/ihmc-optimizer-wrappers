@@ -7,12 +7,12 @@ namespace ihmc_optimizer_wrappers
 {
    class QpOASESSolverHandle
    {
-      public:
+    public:
       QpOASESSolverHandle();
 
       virtual ~QpOASESSolverHandle();
 
-      private:
+    private:
 
    };
 }
