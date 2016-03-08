@@ -9,3 +9,5 @@
 /.gradle
 /.project
 /.gitignore
+.idea/
+*.iml
