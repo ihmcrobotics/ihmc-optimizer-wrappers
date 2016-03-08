@@ -34,10 +34,26 @@ JNIEXPORT void JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_initiali
 /*
  * Class:     us_ihmc_convexOptimization_QpOASESJNISolver
  * Method:    createSolver
- * Signature: (II)J
+ * Signature: ()J
  */
 JNIEXPORT jlong JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_createSolver
-        (JNIEnv *, jobject, jint, jint);
+        (JNIEnv *, jobject);
+
+/*
+ * Class:     us_ihmc_convexOptimization_QpOASESJNISolver
+ * Method:    setHessianTypeOrdinal
+ * Signature: (IJ)V
+ */
+JNIEXPORT void JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_setHessianTypeOrdinal
+        (JNIEnv *, jobject, jint, jlong);
+
+/*
+ * Class:     us_ihmc_convexOptimization_QpOASESJNISolver
+ * Method:    setSolverOptionOrdinal
+ * Signature: (IJ)V
+ */
+JNIEXPORT void JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_setSolverOptionOrdinal
+        (JNIEnv *, jobject, jint, jlong);
 
 /*
  * Class:     us_ihmc_convexOptimization_QpOASESJNISolver

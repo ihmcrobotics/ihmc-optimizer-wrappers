@@ -45,24 +45,48 @@ JNIEXPORT void JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_initiali
         (JNIEnv *env, jobject object, jint nvar, jint ncon, jlong solverId)
 {
    ihmc_optimizer_wrappers::QpOASESSolverHandle *solverHandle = (ihmc_optimizer_wrappers::QpOASESSolverHandle *) solverId;
-
-   solverHandle->setupQPOASES(nvar, ncon);
-   solverHandle->setupQuadraticProgramBuffers(env);
+   if(!solverHandle->isSolverInitialized())
+   {
+      solverHandle->setupQPOASES(nvar, ncon);
+      solverHandle->setupQuadraticProgramBuffers(env);
+   }
 }
 
 /*
  * Class:     us_ihmc_convexOptimization_QpOASESJNISolver
  * Method:    createSolver
- * Signature: (II)J
+ * Signature: ()J
  */
 JNIEXPORT jlong JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_createSolver
-        (JNIEnv *env, jobject object, jint hessianTypeOrdinal, jint solverTypeOrdinal)
+        (JNIEnv *env, jobject object)
 {
-   ihmc_optimizer_wrappers::QpOASESSolverHandle *solverHandle = new ihmc_optimizer_wrappers::QpOASESSolverHandle(
-           hessianTypeOrdinal, solverTypeOrdinal);
-   std::cout << "Solver handle pointer " << (jlong) solverHandle << std::endl << std::flush;
+   ihmc_optimizer_wrappers::QpOASESSolverHandle *solverHandle = new ihmc_optimizer_wrappers::QpOASESSolverHandle();
 
    return (jlong) solverHandle;
+}
+
+/*
+ * Class:     us_ihmc_convexOptimization_QpOASESJNISolver
+ * Method:    setHessianTypeOrdinal
+ * Signature: (IJ)V
+ */
+JNIEXPORT void JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_setHessianTypeOrdinal
+        (JNIEnv *env, jobject object, jint ordinal, jlong solverId)
+{
+   ihmc_optimizer_wrappers::QpOASESSolverHandle *solverHandle = (ihmc_optimizer_wrappers::QpOASESSolverHandle *) solverId;
+   solverHandle->setHessianTypeOrdinal(ordinal);
+}
+
+/*
+ * Class:     us_ihmc_convexOptimization_QpOASESJNISolver
+ * Method:    setSolverOptionOrdinal
+ * Signature: (IJ)V
+ */
+JNIEXPORT void JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_setSolverOptionOrdinal
+        (JNIEnv *env, jobject object, jint ordinal, jlong solverId)
+{
+   ihmc_optimizer_wrappers::QpOASESSolverHandle *solverHandle = (ihmc_optimizer_wrappers::QpOASESSolverHandle *) solverId;
+   solverHandle->setSolverOptionOrdinal(ordinal);
 }
 
 /*

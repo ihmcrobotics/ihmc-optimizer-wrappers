@@ -2,11 +2,9 @@
 
 namespace ihmc_optimizer_wrappers
 {
-   QpOASESSolverHandle::QpOASESSolverHandle(int hessianTypeOrdinal, int solverOptionOrdinal) : hessianTypeOrdinal(
-           HST_SEMIDEF_ORDINAL), solverOptionOrdinal(RELIABLE_OPTION_ORDINAL)
+   QpOASESSolverHandle::QpOASESSolverHandle()
    {
-      this->hessianTypeOrdinal = hessianTypeOrdinal;
-      this->solverOptionOrdinal = solverOptionOrdinal;
+      this->isInitialized = false;
    }
 
    QpOASESSolverHandle::~QpOASESSolverHandle()
@@ -14,7 +12,7 @@ namespace ihmc_optimizer_wrappers
       delete this->sqProblem;
 
       // Not sure if this needs to be done, I'll play with this later.
-//      delete this->options;
+      delete this->options;
 
       this->deleteBuffers();
    }
@@ -23,10 +21,6 @@ namespace ihmc_optimizer_wrappers
    {
       this->nvar = nvar;
       this->ncon = ncon;
-
-      std::cout << "Setting up QP problem" << std::endl;
-      std::cout << "ncon: " << this->ncon << " nvar: " << this->nvar << std::endl;
-      std::cout << "Hessian Type Ordinal: " << this->hessianTypeOrdinal << std::endl << std::flush;
 
       this->sqProblem = new qpOASES::SQProblem(this->nvar, this->ncon,
                                                static_cast<qpOASES::HessianType>(this->hessianTypeOrdinal));
@@ -51,6 +45,8 @@ namespace ihmc_optimizer_wrappers
       this->options->printLevel = qpOASES::PL_LOW;
 
       this->sqProblem->setOptions(*(this->options));
+
+      this->isInitialized = true;
    }
 
    void QpOASESSolverHandle::setupQuadraticProgramBuffers(JNIEnv *env)
@@ -210,5 +206,20 @@ namespace ihmc_optimizer_wrappers
    void QpOASESSolverHandle::setObjValue(double objValue)
    {
       this->objValue = objValue;
+   }
+
+   void QpOASESSolverHandle::setHessianTypeOrdinal(int hessianTypeOrdinal)
+   {
+      this->hessianTypeOrdinal = hessianTypeOrdinal;
+   }
+
+   void QpOASESSolverHandle::setSolverOptionOrdinal(int solverOptionOrdinal)
+   {
+      this->solverOptionOrdinal = solverOptionOrdinal;
+   }
+
+   bool QpOASESSolverHandle::isSolverInitialized()
+   {
+      return this->isInitialized;
    }
 }

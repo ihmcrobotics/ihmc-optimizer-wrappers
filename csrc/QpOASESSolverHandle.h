@@ -21,7 +21,7 @@ namespace ihmc_optimizer_wrappers
    class QpOASESSolverHandle
    {
     public:
-      QpOASESSolverHandle(int hessianTypeOrdinal, int solverOptionOrdinal);
+      QpOASESSolverHandle();
 
       ~QpOASESSolverHandle();
 
@@ -61,6 +61,12 @@ namespace ihmc_optimizer_wrappers
 
       void setObjValue(double objValue);
 
+      void setHessianTypeOrdinal(int hessianTypeOrdinal);
+
+      void setSolverOptionOrdinal(int solverOptionOrdinal);
+
+      bool isSolverInitialized();
+
     private:
       int hessianTypeOrdinal;
       int solverOptionOrdinal;
@@ -96,6 +102,8 @@ namespace ihmc_optimizer_wrappers
       int numberOfWorkingSetChanges;
       double cpuTime;
       double objValue;
+
+      bool isInitialized;
 
       void deleteBuffers();
    };

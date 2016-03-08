@@ -25,7 +25,7 @@ public class QpOASESJNISolver extends AbstractQpOASESWrapper
       RELIABLE, FAST, MPC, DEFAULT
    }
 
-   private final long solverID;
+   private long solverID;
 
    private DoubleBuffer A_Buffer;
    private DoubleBuffer x_Buffer;
@@ -39,7 +39,8 @@ public class QpOASESJNISolver extends AbstractQpOASESWrapper
    public QpOASESJNISolver(int nvar, int ncon, QPOASESHessianType hessianType, QPOASESSolverOptions solverOption)
    {
       super(nvar, ncon);
-      this.solverID = this.createSolver(hessianType.ordinal(), solverOption.ordinal());
+      setHessianTypeOrdinal(hessianType.ordinal(), this.solverID);
+      setSolverOptionOrdinal(solverOption.ordinal(), this.solverID);
    }
 
    public QpOASESJNISolver(int nvar, int ncon)
@@ -58,7 +59,11 @@ public class QpOASESJNISolver extends AbstractQpOASESWrapper
 
    private native void initializeJNI(int nvar, int ncon, long solverID);
 
-   private native long createSolver(int hessianTypeOrdinal, int solverOptionOrdinal);
+   private native long createSolver();
+
+   private native void setHessianTypeOrdinal(int hessianTypeOrdinal, long solverID);
+
+   private native void setSolverOptionOrdinal(int solverOptionOrdinal, long solverID);
 
    private native ByteBuffer get_A_Buffer(long solverID);
 
@@ -110,6 +115,7 @@ public class QpOASESJNISolver extends AbstractQpOASESWrapper
 
    @Override protected void initializeNative(int nvar, int ncon)
    {
+      this.solverID = this.createSolver();
       this.initializeJNI(nvar, ncon, this.solverID);
       setupBuffers();
    }
