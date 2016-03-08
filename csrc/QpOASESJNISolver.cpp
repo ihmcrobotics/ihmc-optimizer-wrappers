@@ -46,7 +46,7 @@ JNIEXPORT void JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_initiali
 JNIEXPORT jlong JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_createSolver
   (JNIEnv *env, jobject object)
 {
-    return (jlong) (new QpOASESSolverHandle::QpOASESSolverHandle())
+    return (jlong) (new ihmc_optimizer_wrappers::QpOASESSolverHandle::QpOASESSolverHandle());
 }
 
 #ifdef __cplusplus
