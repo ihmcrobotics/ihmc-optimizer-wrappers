@@ -10,5 +10,5 @@ namespace ihmc_optimizer_wrappers
         public:
             QpOASESSolverHandle();
             virtual ~QpOASESSolverHandle();
-    }
+    };
 }
