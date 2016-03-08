@@ -14,13 +14,13 @@ public class QpOASESJNISolver extends AbstractQpOASESWrapper
    public QpOASESJNISolver(int nvar, int ncon)
    {
       super(nvar, ncon);
-      this.solverID = 0;
+      this.solverID = this.createSolver();
    }
 
    public QpOASESJNISolver()
    {
       super();
-      this.solverID = 0;
+      this.solverID = this.createSolver();
    }
 
    /**
@@ -42,6 +42,8 @@ public class QpOASESJNISolver extends AbstractQpOASESWrapper
    private native int hotstartJNI(long solverID);
 
    private native void initializeJNI(int nvar, int ncon, long solverID);
+
+   private native long createSolver();
 
    @Override protected int solveNative(double[] H, double[] g, double[] A, double[] lb, double[] ub, double[] lbA, double[] ubA, int[] nWSR, double[] cputime,
          double[] x, double[] objVal)
