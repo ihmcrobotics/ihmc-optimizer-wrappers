@@ -3,13 +3,14 @@ package us.ihmc.convexOptimization;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.DoubleBuffer;
+
 import us.ihmc.tools.nativelibraries.NativeLibraryLoader;
 
 public class QpOASESJNISolver extends AbstractQpOASESWrapper
 {
    static
    {
-      NativeLibraryLoader.loadLibrary("us.ihmc.convexOptimization", "QPOASESJNIWrapper");
+      NativeLibraryLoader.loadLibrary("us.ihmc.convexOptimization", "IHMCOASESConstrainedQPSolver");
    }
 
    // We typically use HST_SEMIDEF
@@ -51,20 +52,6 @@ public class QpOASESJNISolver extends AbstractQpOASESWrapper
       this(1, 1);
    }
 
-   /**
-    *
-    * min 0.5*x'Hx + g'x
-    *
-    * st lbA <= Ax <= ubA
-    *     lb <= x <= ub
-    *
-    * matrices are row-major
-    *
-    * @param nWSR - number of working set re-calculation
-    * @param cputime - maximum cputime, null
-    * @param x - initial and return variable to be optimized
-    * @return returnCode from C-API
-    */
    private native int solveJNI(int numberOfWorkingSetChanges, double cpuTime, long solverID);
 
    private native int hotstartJNI(int numberOfWorkingSetChanges, double cpuTime, long solverID);
@@ -101,7 +88,7 @@ public class QpOASESJNISolver extends AbstractQpOASESWrapper
       updateBuffers(H, g, A, lb, ub, lbA, ubA, x);
       int ret = this.solveJNI(nWSR[0], cputime[0], this.solverID);
       updateArrays(H, g, A, lb, ub, lbA, ubA, x);
-//      System.out.println("cputimeC:" + cputime[0]);
+      //      System.out.println("cputimeC:" + cputime[0]);
       nWSR[0] = getNumberOfWorkingSetChangesFromNative(this.solverID);
       cputime[0] = getCPUTimeFromNative(this.solverID);
       objVal[0] = getObjValueFromNative(this.solverID);
@@ -114,7 +101,7 @@ public class QpOASESJNISolver extends AbstractQpOASESWrapper
       updateBuffers(H, g, A, lb, ub, lbA, ubA, x);
       int ret = this.hotstartJNI(nWSR[0], cputime[0], this.solverID);
       updateArrays(H, g, A, lb, ub, lbA, ubA, x);
-//      System.out.println("cputimeC:" + cputime[0]);
+      //      System.out.println("cputimeC:" + cputime[0]);
       nWSR[0] = getNumberOfWorkingSetChangesFromNative(this.solverID);
       cputime[0] = getCPUTimeFromNative(this.solverID);
       objVal[0] = getObjValueFromNative(this.solverID);
@@ -164,41 +151,50 @@ public class QpOASESJNISolver extends AbstractQpOASESWrapper
 
    private void updateBuffers(double[] H, double[] g, double[] A, double[] lb, double[] ub, double[] lbA, double[] ubA, double[] x)
    {
-        H_Buffer.clear();
-        H_Buffer.put(H);
+      H_Buffer.clear();
+      H_Buffer.put(H);
 
-        g_Buffer.clear();
-        g_Buffer.put(g);
+      g_Buffer.clear();
+      g_Buffer.put(g);
 
-        A_Buffer.clear();
-        A_Buffer.put(A);
+      A_Buffer.clear();
+      A_Buffer.put(A);
 
-        x_Buffer.clear();
-        x_Buffer.put(x);
+      x_Buffer.clear();
+      x_Buffer.put(x);
 
-        lb_Buffer.clear();
-        lb_Buffer.put(lb);
+      lb_Buffer.clear();
+      lb_Buffer.put(lb);
 
-        ub_Buffer.clear();
-        ub_Buffer.put(ub);
+      ub_Buffer.clear();
+      ub_Buffer.put(ub);
 
-        lbA_Buffer.clear();
-        lbA_Buffer.put(lbA);
+      lbA_Buffer.clear();
+      lbA_Buffer.put(lbA);
 
-        ubA_Buffer.clear();
-        ubA_Buffer.put(ubA);
+      ubA_Buffer.clear();
+      ubA_Buffer.put(ubA);
    }
 
    private void updateArrays(double[] H, double[] g, double[] A, double[] lb, double[] ub, double[] lbA, double[] ubA, double[] x)
    {
-        H_Buffer.clear();
-        g_Buffer.clear();
-        A_Buffer.clear();
-        x_Buffer.clear();
-        lb_Buffer.clear();
-        ub_Buffer.clear();
-        lbA_Buffer.clear();
-        ubA_Buffer.clear();
+      H_Buffer.clear();
+      g_Buffer.clear();
+      A_Buffer.clear();
+      x_Buffer.clear();
+      lb_Buffer.clear();
+      ub_Buffer.clear();
+      lbA_Buffer.clear();
+      ubA_Buffer.clear();
+
+      H_Buffer.get(H);
+      g_Buffer.get(g);
+      A_Buffer.get(A);
+      x_Buffer.get(x);
+      lb_Buffer.get(lb);
+      ub_Buffer.get(ub);
+      lbA_Buffer.get(lbA);
+      ubA_Buffer.get(ubA);
    }
 
 }
