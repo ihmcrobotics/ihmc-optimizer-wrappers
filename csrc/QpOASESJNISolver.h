@@ -39,6 +39,70 @@ JNIEXPORT void JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_initiali
 JNIEXPORT jlong JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_createSolver
         (JNIEnv *, jobject);
 
+/*
+ * Class:     us_ihmc_convexOptimization_QpOASESJNISolver
+ * Method:    getABuffer
+ * Signature: (J)Ljava/nio/ByteBuffer;
+ */
+JNIEXPORT jobject JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_getABuffer
+        (JNIEnv *, jobject, jlong);
+
+/*
+ * Class:     us_ihmc_convexOptimization_QpOASESJNISolver
+ * Method:    getXBuffer
+ * Signature: (J)Ljava/nio/ByteBuffer;
+ */
+JNIEXPORT jobject JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_getXBuffer
+        (JNIEnv *, jobject, jlong);
+
+/*
+ * Class:     us_ihmc_convexOptimization_QpOASESJNISolver
+ * Method:    getHessianBuffer
+ * Signature: (J)Ljava/nio/ByteBuffer;
+ */
+JNIEXPORT jobject JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_getHessianBuffer
+        (JNIEnv *, jobject, jlong);
+
+/*
+ * Class:     us_ihmc_convexOptimization_QpOASESJNISolver
+ * Method:    getGradientBuffer
+ * Signature: (J)Ljava/nio/ByteBuffer;
+ */
+JNIEXPORT jobject JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_getGradientBuffer
+        (JNIEnv *, jobject, jlong);
+
+/*
+ * Class:     us_ihmc_convexOptimization_QpOASESJNISolver
+ * Method:    getLowerBoundBuffer
+ * Signature: (J)Ljava/nio/ByteBuffer;
+ */
+JNIEXPORT jobject JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_getLowerBoundBuffer
+        (JNIEnv *, jobject, jlong);
+
+/*
+ * Class:     us_ihmc_convexOptimization_QpOASESJNISolver
+ * Method:    getUpperBoundBuffer
+ * Signature: (J)Ljava/nio/ByteBuffer;
+ */
+JNIEXPORT jobject JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_getUpperBoundBuffer
+        (JNIEnv *, jobject, jlong);
+
+/*
+ * Class:     us_ihmc_convexOptimization_QpOASESJNISolver
+ * Method:    getLowerBoundABuffer
+ * Signature: (J)Ljava/nio/ByteBuffer;
+ */
+JNIEXPORT jobject JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_getLowerBoundABuffer
+        (JNIEnv *, jobject, jlong);
+
+/*
+ * Class:     us_ihmc_convexOptimization_QpOASESJNISolver
+ * Method:    getUpperBoundABuffer
+ * Signature: (J)Ljava/nio/ByteBuffer;
+ */
+JNIEXPORT jobject JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_getUpperBoundABuffer
+        (JNIEnv *, jobject, jlong);
+
 #ifdef __cplusplus
 }
 #endif

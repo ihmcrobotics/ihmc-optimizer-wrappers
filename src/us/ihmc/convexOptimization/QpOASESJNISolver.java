@@ -1,5 +1,6 @@
 package us.ihmc.convexOptimization;
 
+import java.nio.ByteBuffer;
 import us.ihmc.tools.nativelibraries.NativeLibraryLoader;
 
 public class QpOASESJNISolver extends AbstractQpOASESWrapper
@@ -44,6 +45,23 @@ public class QpOASESJNISolver extends AbstractQpOASESWrapper
    private native void initializeJNI(int nvar, int ncon, long solverID);
 
    private native long createSolver();
+
+   private native ByteBuffer getABuffer(long solverID);
+
+   private native ByteBuffer getXBuffer(long solverID);
+
+   private native ByteBuffer getHessianBuffer(long solverID);
+
+   private native ByteBuffer getGradientBuffer(long solverID);
+
+   private native ByteBuffer getLowerBoundBuffer(long solverID);
+
+   private native ByteBuffer getUpperBoundBuffer(long solverID);
+
+   private native ByteBuffer getLowerBoundABuffer(long solverID);
+
+   private native ByteBuffer getUpperBoundABuffer(long solverID);
+
 
    @Override protected int solveNative(double[] H, double[] g, double[] A, double[] lb, double[] ub, double[] lbA, double[] ubA, int[] nWSR, double[] cputime,
          double[] x, double[] objVal)
