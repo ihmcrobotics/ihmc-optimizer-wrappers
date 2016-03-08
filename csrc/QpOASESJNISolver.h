@@ -13,7 +13,7 @@ extern "C" {
  * Signature: (J)I
  */
 JNIEXPORT jint JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_solveJNI
-  (JNIEnv *, jobject, jlong);
+        (JNIEnv *, jobject, jlong);
 
 /*
  * Class:     us_ihmc_convexOptimization_QpOASESJNISolver
@@ -21,7 +21,7 @@ JNIEXPORT jint JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_solveJNI
  * Signature: (J)I
  */
 JNIEXPORT jint JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_hotstartJNI
-  (JNIEnv *, jobject, jlong);
+        (JNIEnv *, jobject, jlong);
 
 /*
  * Class:     us_ihmc_convexOptimization_QpOASESJNISolver
@@ -29,7 +29,7 @@ JNIEXPORT jint JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_hotstart
  * Signature: (IIJ)V
  */
 JNIEXPORT void JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_initializeJNI
-  (JNIEnv *, jobject, jint, jint, jlong);
+        (JNIEnv *, jobject, jint, jint, jlong);
 
 /*
  * Class:     us_ihmc_convexOptimization_QpOASESJNISolver
@@ -37,7 +37,7 @@ JNIEXPORT void JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_initiali
  * Signature: ()J
  */
 JNIEXPORT jlong JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_createSolver
-  (JNIEnv *, jobject);
+        (JNIEnv *, jobject);
 
 #ifdef __cplusplus
 }

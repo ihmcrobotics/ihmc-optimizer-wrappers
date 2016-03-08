@@ -15,7 +15,7 @@ extern "C" {
  * Signature: (J)I
  */
 JNIEXPORT jint JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_solveJNI
-  (JNIEnv *env, jobject object, jlong solverId)
+        (JNIEnv *env, jobject object, jlong solverId)
 {
 
 }
@@ -26,7 +26,7 @@ JNIEXPORT jint JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_solveJNI
  * Signature: (J)I
  */
 JNIEXPORT jint JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_hotstartJNI
-  (JNIEnv *env, jobject object, jlong solverId)
+        (JNIEnv *env, jobject object, jlong solverId)
 {
 }
 /*
@@ -35,7 +35,7 @@ JNIEXPORT jint JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_hotstart
  * Signature: (IIJ)V
  */
 JNIEXPORT void JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_initializeJNI
-  (JNIEnv *env, jobject object, jint nvar, jint ncon, jlong solverId)
+        (JNIEnv *env, jobject object, jint nvar, jint ncon, jlong solverId)
 {
 }
 /*
@@ -44,9 +44,9 @@ JNIEXPORT void JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_initiali
  * Signature: ()J
  */
 JNIEXPORT jlong JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_createSolver
-  (JNIEnv *env, jobject object)
+        (JNIEnv *env, jobject object)
 {
-    return (jlong) (new ihmc_optimizer_wrappers::QpOASESSolverHandle::QpOASESSolverHandle());
+   return (jlong) (new ihmc_optimizer_wrappers::QpOASESSolverHandle::QpOASESSolverHandle());
 }
 
 #ifdef __cplusplus
