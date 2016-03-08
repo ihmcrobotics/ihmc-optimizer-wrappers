@@ -48,7 +48,7 @@ JNIEXPORT void JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_initiali
  * Signature: ()J
  */
 JNIEXPORT jlong JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_createSolver
-        (JNIEnv *env, jobject object)
+        (JNIEnv *env, jobject object, jint hessianTypeOrdinal, jint solverTypeOrdinal)
 {
    return (jlong) (new ihmc_optimizer_wrappers::QpOASESSolverHandle::QpOASESSolverHandle());
 }

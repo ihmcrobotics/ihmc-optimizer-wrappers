@@ -10,18 +10,34 @@ public class QpOASESJNISolver extends AbstractQpOASESWrapper
       NativeLibraryLoader.loadLibrary("us.ihmc.convexOptimization", "QPOASESJNIWrapper");
    }
 
+   // We typically use HST_SEMIDEF
+   public enum QPOASESHessianType
+   {
+      HST_ZERO, HST_IDENTITY, HST_POSDEF, HST_POSDEF_NULLSPACE, HST_SEMIDEF, HST_INDEF, HST_UNKNOWN
+   }
+
+   // We typically use RELIABLE
+   public enum QPOASESSolverOptions
+   {
+      RELIABLE, FAST, MPC, DEFAULT
+   }
+
    private final long solverID;
+
+   public QpOASESJNISolver(int nvar, int ncon, QPOASESHessianType hessianType, QPOASESSolverOptions solverOption)
+   {
+      super(nvar, ncon);
+      this.solverID = this.createSolver(hessianType.ordinal(), solverOption.ordinal());
+   }
 
    public QpOASESJNISolver(int nvar, int ncon)
    {
-      super(nvar, ncon);
-      this.solverID = this.createSolver();
+      this(nvar, ncon, QPOASESHessianType.HST_SEMIDEF, QPOASESSolverOptions.RELIABLE);
    }
 
    public QpOASESJNISolver()
    {
-      super();
-      this.solverID = this.createSolver();
+      this(1, 1);
    }
 
    /**
@@ -44,7 +60,7 @@ public class QpOASESJNISolver extends AbstractQpOASESWrapper
 
    private native void initializeJNI(int nvar, int ncon, long solverID);
 
-   private native long createSolver();
+   private native long createSolver(int hessianTypeOrdinal, int solverOptionOrdinal);
 
    private native ByteBuffer getABuffer(long solverID);
 

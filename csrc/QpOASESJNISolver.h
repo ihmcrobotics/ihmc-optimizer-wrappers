@@ -34,10 +34,10 @@ JNIEXPORT void JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_initiali
 /*
  * Class:     us_ihmc_convexOptimization_QpOASESJNISolver
  * Method:    createSolver
- * Signature: ()J
+ * Signature: (II)J
  */
 JNIEXPORT jlong JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_createSolver
-        (JNIEnv *, jobject);
+        (JNIEnv *, jobject, jint, jint);
 
 /*
  * Class:     us_ihmc_convexOptimization_QpOASESJNISolver

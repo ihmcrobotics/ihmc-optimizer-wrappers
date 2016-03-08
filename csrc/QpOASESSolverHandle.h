@@ -3,12 +3,25 @@
 #include <limits>
 #include <jni.h>
 
+#define HST_ZERO_ORDINAL 0
+#define HST_IDENTITY_ORDINAL 1
+#define HST_POSDEF_ORDINAL 2
+#define HST_POSDEF_NULLSPACE_ORDINAL 3
+#define HST_SEMIDEF_ORDINAL 4
+#define HST_INDEF_ORDINAL 5
+#define HST_UNKNOWN_ORDINAL 6
+
+#define RELIABLE_OPTION_ORDINAL 0
+#define FAST_OPTION_ORDINAL 1
+#define MPC_OPTION_ORDINAL 2
+#define DEFAULT_OPTION_ORDINAL 3
+
 namespace ihmc_optimizer_wrappers
 {
    class QpOASESSolverHandle
    {
     public:
-      QpOASESSolverHandle();
+      QpOASESSolverHandle(int hessianTypeOrdinal, int solverOptionOrdinal);
       ~QpOASESSolverHandle();
 
       int getNVar();
@@ -26,6 +39,8 @@ namespace ihmc_optimizer_wrappers
       jobject getUpperBoundABuffer();
 
     private:
+      int hessianTypeOrdinal;
+      int solverOptionOrdinal;
       int nvar;
       int ncon;
       qpOASES::SQProblem *sqProblem;

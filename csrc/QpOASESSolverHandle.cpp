@@ -2,8 +2,10 @@
 
 namespace ihmc_optimizer_wrappers
 {
-   QpOASESSolverHandle::QpOASESSolverHandle()
+   QpOASESSolverHandle::QpOASESSolverHandle(int hessianTypeOrdinal, int solverOptionOrdinal) : hessianTypeOrdinal(HST_SEMIDEF_ORDINAL), solverOptionOrdinal(RELIABLE_OPTION_ORDINAL)
    {
+      this->hessianTypeOrdinal = hessianTypeOrdinal;
+      this-> solverOptionOrdinal = solverOptionOrdinal;
    }
 
    QpOASESSolverHandle::~QpOASESSolverHandle()
@@ -31,10 +33,25 @@ namespace ihmc_optimizer_wrappers
       this->nvar = nvar;
       this->ncon = ncon;
 
-      this->sqProblem = new qpOASES::SQProblem(this->nvar, this->ncon, qpOASES::HST_SEMIDEF);
+      this->sqProblem = new qpOASES::SQProblem(this->nvar, this->ncon, static_cast<qpOASES::HessianType>(this->hessianTypeOrdinal));
       this->options = new qpOASES::Options;
 
-      this->options->setToReliable();
+      switch(this->solverOptionOrdinal)
+      {
+         case RELIABLE_OPTION_ORDINAL:
+            this->options->setToReliable();
+            break;
+         case FAST_OPTION_ORDINAL:
+            this->options->setToFast();
+            break;
+         case MPC_OPTION_ORDINAL:
+            this->options->setToMPC();
+            break;
+         case DEFAULT_OPTION_ORDINAL:
+         default:
+            this->options->setToDefault();
+      }
+
       this->options->printLevel = qpOASES::PL_LOW;
 
       this->sqProblem->setOptions(*(this->options));
