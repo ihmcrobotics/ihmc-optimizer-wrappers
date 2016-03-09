@@ -11,7 +11,7 @@ endif(WIN32)
 
 
 FIND_PACKAGE(JNI)
-FIND_PACKAGE(SWIG REQUIRED)
+#FIND_PACKAGE(SWIG REQUIRED)
 
 set( IHMC_PACK us.ihmc.convexOptimization)
 set( IHMC_PATH us/ihmc/convexOptimization)
@@ -21,7 +21,7 @@ SET(CMAKE_CXX_FLAGS "-fPIC")
 SET(CMAKE_C_FLAGS "-fPIC")
 endif()
 
-include_directories(${JNI_INCLUDE_DIRS}) 
+include_directories(${JNI_INCLUDE_DIRS})
 ############## qpOASES ####################
 include_directories(qpOASES/include)
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D__NO_COPYRIGHT__")

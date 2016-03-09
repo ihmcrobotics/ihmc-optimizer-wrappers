@@ -10,7 +10,7 @@ public class QpOASESJNISolver extends AbstractQpOASESWrapper
 {
    static
    {
-      NativeLibraryLoader.loadLibrary("us.ihmc.convexOptimization", "IHMCOASESConstrainedQPSolver");
+      NativeLibraryLoader.loadLibrary("us.ihmc.convexOptimization", "IHMCOASESConstrainedQPSolver_rel");
    }
 
    // We typically use HST_SEMIDEF
