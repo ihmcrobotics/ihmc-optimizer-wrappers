@@ -7,7 +7,7 @@ apply plugin: 'maven-publish'
 
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
-version = '0.0.23'
+version = '0.0.24'
 
 project.ext.fullVersion = version
 project.ext.vcsUrl = "https://github.com/ihmcrobotics/ihmc-optimizer-wrappers"
@@ -37,6 +37,8 @@ dependencies {
   compile group: 'us.ihmc', name: 'IHMCNativeLibraryLoader', version: '1.0'
 	compile group: 'net.java.dev.jna', name: 'jna', version: '4.1.0'
 }
+
+processResources.outputs.upToDateWhen { false }
 
 jar {
    manifest {

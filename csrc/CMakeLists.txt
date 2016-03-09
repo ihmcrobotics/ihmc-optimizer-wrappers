@@ -11,7 +11,7 @@ endif(WIN32)
 
 
 FIND_PACKAGE(JNI)
-FIND_PACKAGE(SWIG REQUIRED)
+#FIND_PACKAGE(SWIG REQUIRED)
 
 set( IHMC_PACK us.ihmc.convexOptimization)
 set( IHMC_PATH us/ihmc/convexOptimization)
@@ -21,7 +21,7 @@ SET(CMAKE_CXX_FLAGS "-fPIC")
 SET(CMAKE_C_FLAGS "-fPIC")
 endif()
 
-include_directories(${JNI_INCLUDE_DIRS}) 
+include_directories(${JNI_INCLUDE_DIRS})
 ############## qpOASES ####################
 include_directories(qpOASES/include)
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D__NO_COPYRIGHT__")
@@ -36,26 +36,34 @@ if(APPLE)
 	set_target_properties(OASESConstrainedQPSolver PROPERTIES SUFFIX ".dylib")
 endif(APPLE)
 
-############# qpOASES - SWIG #############
-
-INCLUDE(${SWIG_USE_FILE})
-SET(CMAKE_SWIG_FLAGS "")
-
-SET_SOURCE_FILES_PROPERTIES(qpOASES.i PROPERTIES CPLUSPLUS ON)
-SET_SOURCE_FILES_PROPERTIES(qpOASES.i PROPERTIES SWIG_FLAGS "-includeall")
-SET_SOURCE_FILES_PROPERTIES(qpOASES.i PROPERTIES SWIG_FLAGS "-cpperraswarn")
-
-SET( CMAKE_SWIG_FLAGS -package ${IHMC_PACK}.qpOASES)
-SET(CMAKE_SWIG_OUTDIR ${CMAKE_SOURCE_DIR}/generated-src/${IHMC_PATH}/qpOASES)
-
-SWIG_ADD_MODULE(qpOASESSwig   java qpOASES.i)
-SET_SOURCE_FILES_PROPERTIES(${SWIG_GENERATED_FILE_FULLNAME} PROPERTIES COMPILE_FLAGS "-fPIC")
-SWIG_LINK_LIBRARIES(qpOASESSwig ${JAVA_LIBRARIES}  qpOASES )
+############# qpOASES - JNI w/ Objects ##############
+add_library(IHMCOASESConstrainedQPSolver SHARED  "QpOASESJNISolver.cpp" "QpOASESSolverHandle.cpp")
+target_link_libraries(IHMCOASESConstrainedQPSolver qpOASES)
+install(TARGETS  IHMCOASESConstrainedQPSolver RUNTIME DESTINATION ${CMAKE_SOURCE_DIR}/resources/${IHMC_PATH} LIBRARY DESTINATION ${CMAKE_SOURCE_DIR}/resources/${IHMC_PATH})
 if(APPLE)
-	set_target_properties(qpOASESSwig PROPERTIES SUFFIX ".dylib")
+	set_target_properties(IHMCOASESConstrainedQPSolver PROPERTIES SUFFIX ".dylib")
 endif(APPLE)
 
-install(TARGETS qpOASESSwig DESTINATION ${CMAKE_SOURCE_DIR}/resources/${IHMC_PATH})
+############# qpOASES - SWIG #############
+
+#INCLUDE(${SWIG_USE_FILE})
+#SET(CMAKE_SWIG_FLAGS "")
+#
+#SET_SOURCE_FILES_PROPERTIES(qpOASES.i PROPERTIES CPLUSPLUS ON)
+#SET_SOURCE_FILES_PROPERTIES(qpOASES.i PROPERTIES SWIG_FLAGS "-includeall")
+#SET_SOURCE_FILES_PROPERTIES(qpOASES.i PROPERTIES SWIG_FLAGS "-cpperraswarn")
+#
+#SET( CMAKE_SWIG_FLAGS -package ${IHMC_PACK}.qpOASES)
+#SET(CMAKE_SWIG_OUTDIR ${CMAKE_SOURCE_DIR}/generated-src/${IHMC_PATH}/qpOASES)
+#
+#SWIG_ADD_MODULE(qpOASESSwig   java qpOASES.i)
+#SET_SOURCE_FILES_PROPERTIES(${SWIG_GENERATED_FILE_FULLNAME} PROPERTIES COMPILE_FLAGS "-fPIC")
+#SWIG_LINK_LIBRARIES(qpOASESSwig ${JAVA_LIBRARIES}  qpOASES )
+#if(APPLE)
+#	set_target_properties(qpOASESSwig PROPERTIES SUFFIX ".dylib")
+#endif(APPLE)
+#
+#install(TARGETS qpOASESSwig DESTINATION ${CMAKE_SOURCE_DIR}/resources/${IHMC_PATH})
 
 
 ############# quadProg ###################
