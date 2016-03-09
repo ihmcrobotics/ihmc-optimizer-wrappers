@@ -210,6 +210,17 @@ JNIEXPORT jdouble JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_getOb
    return ((ihmc_optimizer_wrappers::QpOASESSolverHandle *) solverID)->getObjValue();
 }
 
+/*
+ * Class:     us_ihmc_convexOptimization_QpOASESJNISolver
+ * Method:    reinitializeSolverOptions
+ * Signature: (J)V
+ */
+JNIEXPORT void JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_reinitializeSolverOptions
+        (JNIEnv *env, jobject object, jlong solverId)
+{
+   ((ihmc_optimizer_wrappers::QpOASESSolverHandle *) solverId)->reinitializeSolverOptions();
+}
+
 #ifdef __cplusplus
 }
 #endif

@@ -41,6 +41,7 @@ public class QpOASESJNISolver extends AbstractQpOASESWrapper
       super(nvar, ncon);
       setHessianTypeOrdinal(hessianType.ordinal(), this.solverID);
       setSolverOptionOrdinal(solverOption.ordinal(), this.solverID);
+      this.reinitializeSolverOptions(this.solverID);
    }
 
    public QpOASESJNISolver(int nvar, int ncon)
@@ -86,6 +87,8 @@ public class QpOASESJNISolver extends AbstractQpOASESWrapper
    private native double getCPUTimeFromNative(long solverID);
 
    private native double getObjValueFromNative(long solverID);
+
+   private native void reinitializeSolverOptions(long solverID);
 
    @Override protected int solveNative(double[] H, double[] g, double[] A, double[] lb, double[] ub, double[] lbA, double[] ubA, int[] nWSR, double[] cputime,
          double[] x, double[] objVal)
