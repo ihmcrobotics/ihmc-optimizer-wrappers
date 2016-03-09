@@ -222,4 +222,29 @@ namespace ihmc_optimizer_wrappers
    {
       return this->isInitialized;
    }
+
+   void QpOASESSolverHandle::reinitializeSolverOptions()
+   {
+      this->sqProblem->setHessianType(static_cast<qpOASES::HessianType>(this->hessianTypeOrdinal));
+
+      switch (this->solverOptionOrdinal)
+      {
+         case RELIABLE_OPTION_ORDINAL:
+            this->options->setToReliable();
+            break;
+         case FAST_OPTION_ORDINAL:
+            this->options->setToFast();
+            break;
+         case MPC_OPTION_ORDINAL:
+            this->options->setToMPC();
+            break;
+         case DEFAULT_OPTION_ORDINAL:
+         default:
+            this->options->setToDefault();
+      }
+
+      this->options->printLevel = qpOASES::PL_LOW;
+
+      this->sqProblem->setOptions(*(this->options));
+   }
 }

@@ -67,6 +67,8 @@ namespace ihmc_optimizer_wrappers
 
       bool isSolverInitialized();
 
+      void reinitializeSolverOptions();
+
     private:
       int hessianTypeOrdinal;
       int solverOptionOrdinal;

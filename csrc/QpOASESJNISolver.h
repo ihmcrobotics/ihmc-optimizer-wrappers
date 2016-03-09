@@ -143,6 +143,14 @@ JNIEXPORT jdouble JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_getCP
 JNIEXPORT jdouble JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_getObjValueFromNative
         (JNIEnv *, jobject, jlong);
 
+/*
+ * Class:     us_ihmc_convexOptimization_QpOASESJNISolver
+ * Method:    reinitializeSolverOptions
+ * Signature: (J)V
+ */
+JNIEXPORT void JNICALL Java_us_ihmc_convexOptimization_QpOASESJNISolver_reinitializeSolverOptions
+        (JNIEnv *, jobject, jlong);
+
 #ifdef __cplusplus
 }
 #endif
