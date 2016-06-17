@@ -18,7 +18,7 @@ public class QuadProgWrapper {
     int[]   nIteration = new int[1];
     byte[]  errMsg = new byte[512];
     double  objVal     = 0;
-    int     nVariables, nEqualityConstraints, nInequalityConstraints;
+    static int     nVariables, nEqualityConstraints, nInequalityConstraints;
     boolean coldStart;
 
     public QuadProgWrapper() {
