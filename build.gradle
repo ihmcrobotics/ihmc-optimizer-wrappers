@@ -1,98 +1,20 @@
 plugins {
-   id 'us.ihmc.gradle.ihmc-build' version '0.0.9'
+   id("us.ihmc.ihmc-build") version "0.15.5"
+   id("us.ihmc.ihmc-ci") version "4.8"
 }
 
-apply plugin: 'java'
-apply plugin: 'maven-publish'
+ihmc {
+   group = "us.ihmc"
+   version = "0.0.27"
+   vcsUrl = "https://github.com/ihmcrobotics/ihmc-optimizer-wrappers"
+   openSource = true
 
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
-version = '0.0.26'
-
-project.ext.fullVersion = version
-project.ext.vcsUrl = "https://github.com/ihmcrobotics/ihmc-optimizer-wrappers"
-project.ext.licenseURL = "http://www.gnu.org/licenses/lgpl-3.0.txt"
-project.ext.licenseName = "LGPLv3"
-project.ext.bintrayLicenseName = "LGPL-3.0"
-
-repositories {
-  jcenter()
-  mavenCentral()
-  maven {
-      url  "http://dl.bintray.com/ihmcrobotics/maven-release"
-  }
+   configureDependencyResolution()
+   configurePublications()
 }
 
-sourceSets {
-  main {
-    java {
-      srcDirs += 'generated-src'
-    }
-  }
-}
-
-dependencies {
-	compile group: 'junit', name: 'junit', version: '4.11'
+mainDependencies {
 	compile group: 'org.ejml', name: 'dense64', version: '0.28'
-  compile group: 'us.ihmc', name: 'IHMCNativeLibraryLoader', version: '1.0'
+   compile group: 'us.ihmc', name: 'ihmc-native-library-loader', version: '1.1'
 	compile group: 'net.java.dev.jna', name: 'jna', version: '4.1.0'
 }
-
-processResources.outputs.upToDateWhen { false }
-
-jar {
-   manifest {
-      attributes(
-      "Created-By": "IHMC Gradle Build Script",
-      "Implementation-Title": project.name,
-      "Implementation-Version": project.version,
-      "Implementation-Vendor": "IHMC",
-
-      "Bundle-Name": project.name,
-      "Bundle-Version": project.version,
-      "Bundle-License": "http://www.gnu.org/licenses/lgpl-3.0.txt",
-      "Bundle-Vendor": "IHMC",
-      "Main-Class": "us.ihmc.convexOptimization.QpOASESWrapper")
-   }
-}
-
-task sourceJar(type: Jar) {
-	from sourceSets.main.allJava
-}
-
-publishing {
-	publications {
-		mavenJava(MavenPublication) {
-
-			groupId 'us.ihmc'
-			artifactId project.name
-			version "$version"
-			from components.java
-
-
-		pom.withXml {
-                            asNode().children().last() + {
-                                resolveStrategy = Closure.DELEGATE_FIRST
-                                name project.name
-                                url 'https://github.com/ihmcrobotics/ihmc-optimizer-wrappers'
-                                licenses {
-                                    license {
-                                        name 'GNU Lesser General Public License, version 3.0'
-                                        url 'http://www.gnu.org/licenses/lgpl-3.0.txt'
-                                        distribution 'repo'
-                                    }
-                                }
-                            }
-
-                        }
-
-			artifact sourceJar {
-				classifier "sources"
-			}
-                }
-
-	}
-}
-
-def labels = ['ihmc', 'robotics', 'java', 'ik', 'jni', 'optimization', 'convex-optimization']
-ihmc.configureForIHMCOpenSourceBintrayPublish(false, "mavenJava", "maven-release", labels)
