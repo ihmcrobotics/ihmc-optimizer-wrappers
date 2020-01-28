@@ -1,10 +1,11 @@
 package us.ihmc.convexOptimization;
 
-import static org.junit.Assert.assertArrayEquals;
-
 import org.ejml.data.DenseMatrix64F;
 import org.ejml.ops.CommonOps;
-import org.junit.Test;
+
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 public class QPSolversTest {
 
