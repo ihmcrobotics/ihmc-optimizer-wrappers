@@ -1,11 +1,12 @@
 plugins {
-   id("us.ihmc.ihmc-build") version "0.15.5"
-   id("us.ihmc.ihmc-ci") version "4.8"
+   id("us.ihmc.ihmc-build") version "0.20.1"
+   id("us.ihmc.ihmc-ci") version "5.3"
+   id("us.ihmc.ihmc-cd") version "1.8"
 }
 
 ihmc {
    group = "us.ihmc"
-   version = "0.0.28"
+   version = "0.0.29"
    vcsUrl = "https://github.com/ihmcrobotics/ihmc-optimizer-wrappers"
    openSource = true
 
@@ -15,6 +16,6 @@ ihmc {
 
 mainDependencies {
    compile("org.ejml:dense64:0.30")
-   compile("us.ihmc:ihmc-native-library-loader:1.1")
+   compile("us.ihmc:ihmc-native-library-loader:1.2")
    compile("net.java.dev.jna:jna:5.2.0")
 }
