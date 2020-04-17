@@ -15,7 +15,7 @@ ihmc {
 }
 
 mainDependencies {
-   compile("org.ejml:dense64:0.30")
-   compile("us.ihmc:ihmc-native-library-loader:1.2.1")
-   compile("net.java.dev.jna:jna:5.2.0")
+   api("org.ejml:dense64:0.30")
+   api("us.ihmc:ihmc-native-library-loader:1.2.1")
+   api("net.java.dev.jna:jna:5.2.0")
 }
