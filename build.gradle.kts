@@ -17,6 +17,7 @@ ihmc {
 mainDependencies {
    api("org.ejml:ejml-core:0.39")
    api("org.ejml:ejml-ddense:0.39")
-   api("us.ihmc:ihmc-native-library-loader:1.2.1")
    api("net.java.dev.jna:jna:5.2.0")
+
+   api("us.ihmc:ihmc-native-library-loader:1.2.1")
 }
