@@ -2,7 +2,7 @@ package us.ihmc.convexOptimization;
 
 //~--- non-JDK imports --------------------------------------------------------
 
-import org.ejml.data.DenseMatrix64F;
+import org.ejml.data.DMatrixRMaj;
 //~--- JDK imports ------------------------------------------------------------
 
 import com.sun.jna.Native;
@@ -72,8 +72,8 @@ public class QuadProgWrapper {
         }
     }
 
-    public int solve(DenseMatrix64F Q, DenseMatrix64F f, DenseMatrix64F Aeq, DenseMatrix64F beq, DenseMatrix64F Ain,
-                     DenseMatrix64F bin, DenseMatrix64F x, boolean initialize) {
+    public int solve(DMatrixRMaj Q, DMatrixRMaj f, DMatrixRMaj Aeq, DMatrixRMaj beq, DMatrixRMaj Ain,
+                     DMatrixRMaj bin, DMatrixRMaj x, boolean initialize) {
         if ((Aeq.numRows!= Ain.numRows) || (Aeq.numRows!= x.numRows)) {
             throw new RuntimeException("inconsistent constraints");
         }
@@ -104,13 +104,13 @@ public class QuadProgWrapper {
         int             nin    = 1,
                         neq    = 1,
                         nv     = 2;
-        DenseMatrix64F  Q      = new DenseMatrix64F(nv, nv, true, 1, 0, 0, 1);
-        DenseMatrix64F  f      = new DenseMatrix64F(nv, 1, true, 1, 0);
-        DenseMatrix64F  Aeq    = new DenseMatrix64F(nv, neq, true, -1, -1);
-        DenseMatrix64F  beq    = new DenseMatrix64F(neq, 1, true, 0);
-        DenseMatrix64F  Ain    = new DenseMatrix64F(nv, nin, true, -2, -1);
-        DenseMatrix64F  bin    = new DenseMatrix64F(nin, 1, true, 0);
-        DenseMatrix64F  x      = new DenseMatrix64F(nv, 1, true, 0, 0);
+        DMatrixRMaj  Q      = new DMatrixRMaj(nv, nv, true, 1, 0, 0, 1);
+        DMatrixRMaj  f      = new DMatrixRMaj(nv, 1, true, 1, 0);
+        DMatrixRMaj  Aeq    = new DMatrixRMaj(nv, neq, true, -1, -1);
+        DMatrixRMaj  beq    = new DMatrixRMaj(neq, 1, true, 0);
+        DMatrixRMaj  Ain    = new DMatrixRMaj(nv, nin, true, -2, -1);
+        DMatrixRMaj  bin    = new DMatrixRMaj(nin, 1, true, 0);
+        DMatrixRMaj  x      = new DMatrixRMaj(nv, 1, true, 0, 0);
         QuadProgWrapper solver = new QuadProgWrapper();
         int             iter   = solver.solve(Q, f, Aeq, beq, Ain, bin, x, false);
 
