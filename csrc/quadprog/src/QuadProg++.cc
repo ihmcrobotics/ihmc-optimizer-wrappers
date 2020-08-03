@@ -46,7 +46,7 @@ void delete_constraint(Matrix<double>& R, Matrix<double>& J, Vector<int>& A, Vec
 
 // Utility functions for computing the Cholesky decomposition and solving
 // linear systems
-void cholesky_decomposition(Matrix<double>& A);
+bool cholesky_decomposition(Matrix<double>& A);
 void cholesky_solve(const Matrix<double>& L, Vector<double>& x, const Vector<double>& b);
 void forward_elimination(const Matrix<double>& L, Vector<double>& y, const Vector<double>& b);
 void backward_elimination(const Matrix<double>& U, Vector<double>& x, const Vector<double>& y);
@@ -157,7 +157,8 @@ double solve_quadprog(Matrix<double>& G, Vector<double>& g0,
     c1 += G[i][i];
   }
   /* decompose the matrix G in the form L^T L */
-  cholesky_decomposition(G);
+  if (!cholesky_decomposition(G))
+	  return NAN;
 #ifdef TRACE_SOLVER
   print_matrix("G", G);
 #endif
@@ -704,7 +705,7 @@ inline double scalar_product(const Vector<double>& x, const Vector<double>& y)
   return sum;			
 }
 
-void cholesky_decomposition(Matrix<double>& A) 
+bool cholesky_decomposition(Matrix<double>& A) 
 {
   register int i, j, k, n = A.nrows();
   register double sum;
@@ -725,7 +726,7 @@ void cholesky_decomposition(Matrix<double>& A)
           print_matrix("A", A);
           os << "Error in cholesky decomposition, sum: " << sum;
           throw std::logic_error(os.str());
-          exit(-1);
+		  return false;
         }
 	      A[i][i] = ::std::sqrt(sum);
 	    }
@@ -734,7 +735,9 @@ void cholesky_decomposition(Matrix<double>& A)
     }
     for (k = i + 1; k < n; k++)
       A[i][k] = A[k][i];
-  } 
+  }
+
+  return true;
 }
 
 void cholesky_solve(const Matrix<double>& L, Vector<double>& x, const Vector<double>& b)

@@ -52,7 +52,7 @@ void delete_constraint(ublas::matrix<double>& R, ublas::matrix<double>& J, ublas
 
 // Utility functions for computing the Cholesky decomposition and solving
 // linear systems
-void cholesky_decomposition(ublas::matrix<double>& A);
+bool cholesky_decomposition(ublas::matrix<double>& A);
 void cholesky_solve(const ublas::matrix<double>& L, ublas::vector<double>& x, const ublas::vector<double>& b);
 void forward_elimination(const ublas::matrix<double>& L, ublas::vector<double>& y, const ublas::vector<double>& b);
 void backward_elimination(const ublas::matrix<double>& U, ublas::vector<double>& x, const ublas::vector<double>& y);
@@ -164,7 +164,11 @@ double solve_quadprog(ublas::matrix<double>& G, ublas::vector<double>& g0,
     c1 += G(i, i);
   }
   /* decompose the ublas::matrix G in the form L^T L */
-  cholesky_decomposition(G);
+  if (!cholesky_decomposition(G))
+  {
+     iter = -1;
+     return NAN;
+  }
 #ifdef TRACE_SOLVER
   print_matrix("G", G);
 #endif
@@ -711,7 +715,7 @@ inline double scalar_product(const ublas::vector<double>& x, const ublas::vector
   return sum;			
 }
 
-void cholesky_decomposition(ublas::matrix<double>& A) 
+bool cholesky_decomposition(ublas::matrix<double>& A) 
 {
   register int i, j, k, n = A.size1();
   register double sum;
@@ -732,7 +736,7 @@ void cholesky_decomposition(ublas::matrix<double>& A)
           print_matrix("A", A);
           os << "Error in cholesky decomposition, sum: " << sum;
           throw std::logic_error(os.str());
-          exit(-1);
+		  return false;
         }
 	      A(i, i) = ::std::sqrt(sum);
 	    }
@@ -741,7 +745,9 @@ void cholesky_decomposition(ublas::matrix<double>& A)
     }
     for (k = i + 1; k < n; k++)
       A(i, k) = A(k, i);
-  } 
+  }
+
+  return true;
 }
 
 void cholesky_solve(const ublas::matrix<double>& L, ublas::vector<double>& x, const ublas::vector<double>& b)
