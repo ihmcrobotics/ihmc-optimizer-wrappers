@@ -1,4 +1,4 @@
-project(ConvexOptimizationAdapter)
+project(ihmc-optimizer-wrappers)
 cmake_minimum_required(VERSION 2.8)
 
 if(WIN32)
@@ -15,6 +15,7 @@ FIND_PACKAGE(JNI)
 
 set( IHMC_PACK us.ihmc.convexOptimization)
 set( IHMC_PATH us/ihmc/convexOptimization)
+set( RESOURCES_PATH  ${CMAKE_SOURCE_DIR}/../src/main/resources/${IHMC_PATH})
 
 if(UNIX)
 SET(CMAKE_CXX_FLAGS "-fPIC")
@@ -31,7 +32,7 @@ add_library(qpOASES ${qpOASES_SOURCE})
 ############# qpOASES - JNA ##############
 add_library(OASESConstrainedQPSolver SHARED  "OASESConstrainedQPSolver.cpp")
 target_link_libraries(OASESConstrainedQPSolver qpOASES)
-install(TARGETS  OASESConstrainedQPSolver RUNTIME DESTINATION ${CMAKE_SOURCE_DIR}/resources/${IHMC_PATH} LIBRARY DESTINATION ${CMAKE_SOURCE_DIR}/resources/${IHMC_PATH})
+install(TARGETS  OASESConstrainedQPSolver RUNTIME DESTINATION ${RESOURCES_PATH} LIBRARY DESTINATION ${RESOURCES_PATH})
 if(APPLE)
 	set_target_properties(OASESConstrainedQPSolver PROPERTIES SUFFIX ".dylib")
 endif(APPLE)
@@ -39,7 +40,7 @@ endif(APPLE)
 ############# qpOASES - JNI w/ Objects ##############
 add_library(IHMCOASESConstrainedQPSolver SHARED  "QpOASESJNISolver.cpp" "QpOASESSolverHandle.cpp")
 target_link_libraries(IHMCOASESConstrainedQPSolver qpOASES)
-install(TARGETS  IHMCOASESConstrainedQPSolver RUNTIME DESTINATION ${CMAKE_SOURCE_DIR}/resources/${IHMC_PATH} LIBRARY DESTINATION ${CMAKE_SOURCE_DIR}/resources/${IHMC_PATH})
+install(TARGETS  IHMCOASESConstrainedQPSolver RUNTIME DESTINATION ${RESOURCES_PATH} LIBRARY DESTINATION ${RESOURCES_PATH})
 if(APPLE)
 	set_target_properties(IHMCOASESConstrainedQPSolver PROPERTIES SUFFIX ".dylib")
 endif(APPLE)
@@ -63,13 +64,13 @@ endif(APPLE)
 #	set_target_properties(qpOASESSwig PROPERTIES SUFFIX ".dylib")
 #endif(APPLE)
 #
-#install(TARGETS qpOASESSwig DESTINATION ${CMAKE_SOURCE_DIR}/resources/${IHMC_PATH})
+#install(TARGETS qpOASESSwig DESTINATION ${RESOURCES_PATH})
 
 
 ############# quadProg ###################
 include_directories(quadprog/src)
 add_library(uQuadProg SHARED quadprog/src/uQuadProg++.cc QuadProgSolver.cpp)
-INSTALL(TARGETS  uQuadProg RUNTIME DESTINATION ${CMAKE_SOURCE_DIR}/resources/${IHMC_PATH} LIBRARY DESTINATION ${CMAKE_SOURCE_DIR}/resources/${IHMC_PATH})
+INSTALL(TARGETS  uQuadProg RUNTIME DESTINATION ${RESOURCES_PATH} LIBRARY DESTINATION ${RESOURCES_PATH})
 if(APPLE)
 	set_target_properties(uQuadProg PROPERTIES SUFFIX ".dylib")
 endif(APPLE)
