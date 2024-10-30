@@ -6,7 +6,7 @@ plugins {
 
 ihmc {
    group = "us.ihmc"
-   version = "0.0.32"
+   version = "0.1.0"
    vcsUrl = "https://github.com/ihmcrobotics/ihmc-optimizer-wrappers"
    openSource = true
 
