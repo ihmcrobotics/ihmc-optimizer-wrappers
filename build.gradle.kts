@@ -17,5 +17,5 @@ mainDependencies {
    api("org.ejml:ejml-ddense:0.39")
    api("net.java.dev.jna:jna:5.2.0")
 
-   api("us.ihmc:ihmc-native-library-loader:2.0.4")
+   api("us.ihmc:ihmc-native-library-loader:2.0.6")
 }
