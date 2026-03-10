@@ -1,1 +1,15 @@
+name: Build ihmc-optimizer-wrapper natives
 
+on:
+  workflow_dispatch:
+
+jobs:
+  hello-world:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Say hello
+        run: echo "Hello"
