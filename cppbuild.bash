@@ -50,4 +50,34 @@ if [ -f "csrc/libuQuadProg_rel.so" ]; then
     cp csrc/libuQuadProg_rel.so ../src/main/resources/ihmc-optimizer-wrappers/native/linux-x86_64
   fi
 fi
+# macOS
+mkdir -p ../src/main/resources/ihmc-optimizer-wrappers/native/macos-arm64
+mkdir -p ../src/main/resources/ihmc-optimizer-wrappers/native/macos-x86_64
+if [ -f "csrc/libIHMCOASESConstrainedQPSolver_rel.dylib" ]; then
+  if [ "$MAC_CROSS_COMPILE_ARM" == "1" ]; then
+    cp csrc/libIHMCOASESConstrainedQPSolver_rel.dylib \
+      ../src/main/resources/ihmc-optimizer-wrappers/native/macos-arm64/libIHMCOASESConstrainedQPSolver_rel-arm64.dylib
+  else
+    cp csrc/libIHMCOASESConstrainedQPSolver_rel.dylib \
+      ../src/main/resources/ihmc-optimizer-wrappers/native/macos-x86_64
+  fi
+fi
+if [ -f "csrc/libOASESConstrainedQPSolver_rel.dylib" ]; then
+  if [ "$MAC_CROSS_COMPILE_ARM" == "1" ]; then
+    cp csrc/libOASESConstrainedQPSolver_rel.dylib \
+      ../src/main/resources/ihmc-optimizer-wrappers/native/macos-arm64/libOASESConstrainedQPSolver_rel-arm64.dylib
+  else
+    cp csrc/libOASESConstrainedQPSolver_rel.dylib \
+      ../src/main/resources/ihmc-optimizer-wrappers/native/macos-x86_64
+  fi
+fi
+if [ -f "csrc/libuQuadProg_rel.dylib" ]; then
+  if [ "$MAC_CROSS_COMPILE_ARM" == "1" ]; then
+    cp csrc/libuQuadProg_rel.dylib \
+      ../src/main/resources/ihmc-optimizer-wrappers/native/macos-arm64/libuQuadProg_rel-arm64.dylib
+  else
+    cp csrc/libuQuadProg_rel.dylib \
+      ../src/main/resources/ihmc-optimizer-wrappers/native/macos-x86_64
+  fi
+fi
 cd $REPO_ROOT
