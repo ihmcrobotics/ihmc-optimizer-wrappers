@@ -6,11 +6,11 @@ REPO_ROOT=$(pwd)
 # Clean and recreate build dir
 rm -rf build generated-src
 mkdir build
-cd build
 
 ########################################
 # Install boost into build dir
 ########################################
+cd build
 echo "Downloading Boost 1.90.0 into build/boost"
 BOOST_VERSION=1_90_0
 BOOST_ARCHIVE="boost_${BOOST_VERSION}.zip"
@@ -22,13 +22,13 @@ if [ ! -f "${BOOST_ARCHIVE}" ]; then
   curl -L "https://archives.boost.io/release/1.90.0/source/boost_1_90_0.zip" -o "${BOOST_ARCHIVE}"
 fi
 unzip -q "${BOOST_ARCHIVE}"
-cd ../..
-
 BOOST_ROOT="$(pwd)/$BOOST_DIR"
+cd $REPO_ROOT
 
 ########################################
 # Configure with CMake
 ########################################
+cd build
 if [ "${MAC_CROSS_COMPILE_ARM:-0}" == "1" ]; then
   cmake -DCMAKE_BUILD_TYPE=Release \
         -DBOOST_ROOT="$BOOST_ROOT" \
