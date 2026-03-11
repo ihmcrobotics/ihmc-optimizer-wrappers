@@ -21,7 +21,7 @@ else
   cmake -DCMAKE_BUILD_TYPE=Release \
         ..
 fi
-make
+cmake --build .
 cd $REPO_ROOT
 
 #### Copy shared libs to resources ####
