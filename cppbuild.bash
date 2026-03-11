@@ -20,7 +20,7 @@ if [ ! -f "${BOOST_ARCHIVE}" ]; then
   curl -L "https://archives.boost.io/release/1.90.0/source/boost_1_90_0.zip" -o "${BOOST_ARCHIVE}"
 fi
 unzip -q "${BOOST_ARCHIVE}"
-export BOOST_ROOT="$(pwd)/boost"
+export BOOST_ROOT="$(pwd)/boost_$BOOST_VERSION"
 export CMAKE_PREFIX_PATH="${BOOST_ROOT}${CMAKE_PREFIX_PATH:+:${CMAKE_PREFIX_PATH}}"
 cd $REPO_ROOT
 
