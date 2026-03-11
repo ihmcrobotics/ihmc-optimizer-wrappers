@@ -16,8 +16,6 @@ BOOST_VERSION=1_90_0
 BOOST_ARCHIVE="boost_${BOOST_VERSION}.zip"
 BOOST_DIR="boost_$BOOST_VERSION"
 
-mkdir -p "$BOOST_DIR"
-cd "$BOOST_DIR"
 if [ ! -f "${BOOST_ARCHIVE}" ]; then
   curl -L "https://archives.boost.io/release/1.90.0/source/boost_1_90_0.zip" -o "${BOOST_ARCHIVE}"
 fi
