@@ -9,22 +9,26 @@ mkdir build
 cd build
 
 ########################################
-# Windows: download Boost into build/boost
+# Windows: download Boost headers (FIXED URL)
 ########################################
 if [[ "$OS" == "Windows_NT" || "$(uname -s | tr '[:upper:]' '[:lower:]')" == *"mingw"* || "$(uname -s)" == "MSYS"* ]]; then
   echo "Detected Windows, downloading Boost headers into build/boost"
 
   BOOST_VERSION=1_90_0
-  BOOST_SHORT=1.90.0
-  BOOST_ARCHIVE=boost_${BOOST_VERSION}.tar.gz
-
+  BOOST_ARCHIVE="boost_${BOOST_VERSION}.zip"
+  
   mkdir -p boost
+  cd boost
+  
   if [ ! -f "${BOOST_ARCHIVE}" ]; then
-    curl -L "https://boostorg.jfrog.io/artifactory/main/release/${BOOST_SHORT}/source/${BOOST_ARCHIVE}" -o "${BOOST_ARCHIVE}"
+    # Use archives.boost.io (direct link)
+    curl -L "https://archives.boost.io/release/1.90.0/source/boost_1_90_0.zip" -o "${BOOST_ARCHIVE}"
   fi
-  tar -xzf "${BOOST_ARCHIVE}" --strip-components=1 -C boost
-
-  # Hint CMake's FindBoost
+  
+  # Use unzip instead of tar (handles both zip/tar.gz reliably)
+  unzip -q "${BOOST_ARCHIVE}"
+  
+  cd ..
   export BOOST_ROOT="$(pwd)/boost"
   export CMAKE_PREFIX_PATH="${BOOST_ROOT}${CMAKE_PREFIX_PATH:+;${CMAKE_PREFIX_PATH}}"
 fi
