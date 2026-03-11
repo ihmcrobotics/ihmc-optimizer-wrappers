@@ -52,22 +52,20 @@ jobs:
       - uses: ilammy/msvc-dev-cmd@v1
         with:
           vsversion: 2022
-      - name: Install boost
-        uses: MarkusJx/install-boost@v2
-        id: install-boost
+      - name: Install Boost via vcpkg
+        uses: microsoft/vcpkg-action@v1
         with:
-          boost_version: 1.89.0
-          platform_version: 2022
-          toolset: msvc
+          vcpkg-triplet: x64-windows
+          vcpkgArguments: boost
       - uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '17'
       - name: Compile native library
-        env:
-          BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
         run: |
-          bash.exe cppbuild.bash
+          export CMAKE_TOOLCHAIN_FILE="${VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
+          export VCPKG_TARGET_TRIPLET="x64-windows"
+          bash cppbuild.bash
       - name: Commit native libraries
         uses: EndBug/add-and-commit@v9
         with:
