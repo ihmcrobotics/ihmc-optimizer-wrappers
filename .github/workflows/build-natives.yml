@@ -52,6 +52,13 @@ jobs:
       - uses: ilammy/msvc-dev-cmd@v1
         with:
           vsversion: 2022
+      - name: Install boost
+        uses: MarkusJx/install-boost@v2
+        id: install-boost
+        with:
+          boost_version: 1.90.0_1
+          platform_version: 2022
+          toolset: msvc
       - uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
