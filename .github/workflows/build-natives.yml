@@ -64,6 +64,8 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
       - name: Compile native library
+        env:
+          BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
         run: |
           bash.exe cppbuild.bash
       - name: Commit native libraries
