@@ -1,6 +1,11 @@
 project(ConvexOptimizationAdapter)
 cmake_minimum_required(VERSION 3.11)
 
+if(DEFINED ENV{BOOST_ROOT})
+    message(STATUS "Using Boost from: $ENV{BOOST_ROOT}")
+    include_directories("$ENV{BOOST_ROOT}/include")
+endif()
+
 if(WIN32)
 	set(CMAKE_C_FLAGS_MINSIZEREL "${CMAKE_C_FLAGS_MINSIZEREL} /MT")
 	set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} /MT")
