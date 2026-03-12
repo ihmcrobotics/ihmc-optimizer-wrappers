@@ -66,6 +66,9 @@ jobs:
       - name: Compile native library
         shell: bash
         run: |
+          ls -al D:/a/ihmc-optimizer-wrappers/ihmc-optimizer-wrappers/boost/boost/include
+          echo sadfasdf
+          ls -al D:/a/ihmc-optimizer-wrappers/ihmc-optimizer-wrappers/boost/boost/include/boost
           BOOST_ROOT="D:/a/ihmc-optimizer-wrappers/ihmc-optimizer-wrappers/boost/boost/include" ./cppbuild.bash
       - name: Commit native libraries
         uses: EndBug/add-and-commit@v9
