@@ -65,8 +65,9 @@ jobs:
           toolset: msvc
       - name: Compile native library
         env:
-          BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
+          BOOST_ROOT: D:/a/ihmc-optimizer-wrappers/ihmc-optimizer-wrappers/boost/boost
         run: |
+          ls D:/a/ihmc-optimizer-wrappers/ihmc-optimizer-wrappers/boost/boost
           bash cppbuild.bash
       - name: Commit native libraries
         uses: EndBug/add-and-commit@v9
