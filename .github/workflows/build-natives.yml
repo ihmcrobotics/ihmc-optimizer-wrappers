@@ -65,7 +65,8 @@ jobs:
           toolset: msvc
       - name: Compile native library
         run: |
-          BOOST_ROOT=${{ steps.install-boost.outputs.BOOST_ROOT }} bash cppbuild.bash
+          export BOOST_ROOT=${{ steps.install-boost.outputs.BOOST_ROOT }}
+          bash cppbuild.bash
       - name: Commit native libraries
         uses: EndBug/add-and-commit@v9
         with:
