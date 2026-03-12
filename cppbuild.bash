@@ -7,6 +7,7 @@ REPO_ROOT=$(pwd)
 rm -rf build generated-src
 mkdir build
 
+export BOOST_ROOT=D:/a/ihmc-optimizer-wrappers/ihmc-optimizer-wrappers/boost/boost/include
 
 ########################################
 # Configure with CMake
