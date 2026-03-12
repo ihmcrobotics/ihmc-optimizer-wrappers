@@ -72,8 +72,6 @@ jobs:
           BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
           CMAKE_PREFIX_PATH: ${{ steps.install-boost.outputs.BOOST_ROOT }}
         run: |
-          echo "Using BOOST_ROOT=$BOOST_ROOT"
-          ls "$BOOST_ROOT/include/boost/numeric/ublas/vector.hpp" && echo "ublas found!" || echo "ublas missing"
           bash cppbuild.bash
       - name: Commit native libraries
         uses: EndBug/add-and-commit@v9
