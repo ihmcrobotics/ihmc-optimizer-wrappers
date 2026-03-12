@@ -7,26 +7,6 @@ REPO_ROOT=$(pwd)
 rm -rf build generated-src
 mkdir build
 
-########################################
-# Install boost into build dir
-########################################
-cd build
-echo "Downloading Boost 1.90.0 into build/boost"
-BOOST_VERSION=1_90_0
-BOOST_ARCHIVE="boost_${BOOST_VERSION}.zip"
-BOOST_DIR="boost_$BOOST_VERSION"
-
-if [ ! -f "${BOOST_ARCHIVE}" ]; then
-  curl -L "https://archives.boost.io/release/1.90.0/source/boost_1_90_0.zip" -o "${BOOST_ARCHIVE}"
-fi
-unzip -q "${BOOST_ARCHIVE}"
-cd "$BOOST_DIR"
-echo "Bootstrapping and building Boost headers"
-./bootstrap.sh --prefix=.
-./b2 headers install
-cd ..
-BOOST_ROOT="$(pwd)/$BOOST_DIR"
-cd $REPO_ROOT
 
 ########################################
 # Configure with CMake
@@ -34,16 +14,10 @@ cd $REPO_ROOT
 cd build
 if [ "${MAC_CROSS_COMPILE_ARM:-0}" == "1" ]; then
   cmake -DCMAKE_BUILD_TYPE=Release \
-        -DBOOST_ROOT="$BOOST_ROOT" \
-        -DBoost_INCLUDE_DIR="$BOOST_ROOT" \
-        -DBOOST_INCLUDEDIR="$BOOST_ROOT" \
         -DCMAKE_OSX_ARCHITECTURES="arm64" \
         ..
 elif [ "${LINUX_CROSS_COMPILE_ARM:-0}" == "1" ]; then
   cmake -DCMAKE_BUILD_TYPE=Release \
-        -DBOOST_ROOT="$BOOST_ROOT" \
-        -DBoost_INCLUDE_DIR="$BOOST_ROOT" \
-        -DBOOST_INCLUDEDIR="$BOOST_ROOT" \
         -DCMAKE_C_COMPILER=aarch64-linux-gnu-gcc \
         -DCMAKE_CXX_COMPILER=aarch64-linux-gnu-g++ \
         -DCMAKE_FIND_ROOT_PATH=/usr/aarch64-linux-gnu \
@@ -51,9 +25,6 @@ elif [ "${LINUX_CROSS_COMPILE_ARM:-0}" == "1" ]; then
         ..
 else
   cmake -DCMAKE_BUILD_TYPE=Release \
-        -DBOOST_ROOT="$BOOST_ROOT" \
-        -DBoost_INCLUDE_DIR="$BOOST_ROOT" \
-        -DBOOST_INCLUDEDIR="$BOOST_ROOT" \
         ..
 fi
 cmake --build .

@@ -19,7 +19,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt update
-          sudo apt install build-essential crossbuild-essential-arm64 cmake git swig -y
+          sudo apt install build-essential crossbuild-essential-arm64 libboost-dev cmake git swig -y
       - uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
@@ -83,6 +83,7 @@ jobs:
       - name: Install dependencies
         run: |
           brew install coreutils
+          brew install boost
           sudo xcode-select --switch /Applications/Xcode_16.app
       - uses: actions/setup-java@v4
         with:
