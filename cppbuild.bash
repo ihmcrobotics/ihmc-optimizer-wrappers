@@ -24,7 +24,7 @@ elif [ "${LINUX_CROSS_COMPILE_ARM:-0}" == "1" ]; then
 else
   cmake ..
 fi
-cmake --build .
+cmake --build . --config Release
 cd "$REPO_ROOT"
 
 #### Copy shared libs to resources ####
