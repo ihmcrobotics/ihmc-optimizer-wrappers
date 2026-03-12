@@ -67,6 +67,14 @@ jobs:
         shell: bash
         run: |
           ls D:/a/ihmc-optimizer-wrappers/ihmc-optimizer-wrappers/boost/boost
+          echo
+          echo
+          echo
+          ls D:/a/ihmc-optimizer-wrappers/ihmc-optimizer-wrappers/boost/boost/include
+          echo
+          echo
+          echo
+          ls D:/a/ihmc-optimizer-wrappers/ihmc-optimizer-wrappers/boost/boost/boost
       - name: Compile native library
         env:
           BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
