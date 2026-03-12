@@ -7,7 +7,7 @@ import us.ihmc.tools.nativelibraries.NativeLibraryLoader;
 public class QpOASESCWrapper extends AbstractQpOASESWrapper{
    static
    {
-      String library = NativeLibraryLoader.extractLibrary("us.ihmc.convexOptimization", "OASESConstrainedQPSolver_rel");
+      String library = NativeLibraryLoader.extractLibrary("ihmc-optimizer-wrappers.native", "OASESConstrainedQPSolver_rel");
       Native.register(QpOASESCWrapper.class, library);
    }
 

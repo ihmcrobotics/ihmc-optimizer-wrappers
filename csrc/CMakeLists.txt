@@ -1,6 +1,11 @@
 project(ConvexOptimizationAdapter)
 cmake_minimum_required(VERSION 3.11)
 
+if(DEFINED ENV{BOOST_ROOT})
+    message(STATUS "Using Boost from: $ENV{BOOST_ROOT}")
+    include_directories("$ENV{BOOST_ROOT}")
+endif()
+
 if(WIN32)
 	set(CMAKE_C_FLAGS_MINSIZEREL "${CMAKE_C_FLAGS_MINSIZEREL} /MT")
 	set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} /MT")
@@ -11,8 +16,7 @@ endif(WIN32)
 
 
 FIND_PACKAGE(JNI)
-FIND_PACKAGE(SWIG REQUIRED)
-# FIND_PACKAGE(osqp REQUIRED)
+#FIND_PACKAGE(SWIG REQUIRED)
 
 set( IHMC_PACK us.ihmc.convexOptimization)
 set( IHMC_PATH us/ihmc/convexOptimization)
@@ -23,7 +27,6 @@ SET(CMAKE_C_FLAGS "-fPIC")
 endif()
 
 include_directories(${JNI_INCLUDE_DIRS})
-
 ############## qpOASES ####################
 include_directories(qpOASES/include)
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D__NO_COPYRIGHT__")
@@ -38,26 +41,6 @@ if(APPLE)
 	set_target_properties(OASESConstrainedQPSolver PROPERTIES SUFFIX ".dylib")
 endif(APPLE)
 
-# ############# OSQP - JNA ################
-# add_library(OSQPSolver SHARED "OSQPSolver.cpp")
-# target_link_libraries(OSQPSolver osqp)
-# install(TARGETS OSQPSolver RUNTIME DESTINATION ${CMAKE_SOURCE_DIR}/resources/${IHMC_PATH} LIBRARY DESTINATION ${CMAKE_SOURCE_DIR}/resources/${IHMC_PATH})
-# if(APPLE)
-# 	set_target_properties(OSQPSolver PROPERTIES SUFFIX ".dylib")
-# endif(APPLE)
-
-############## ReLUQP ####################
-add_subdirectory(ReLUQP-cpp/reluqp)
-
-############# ReLUQP - JNA ################
-add_library(ReLUQPSolver SHARED "ReLUQPSolver.cpp")
-target_include_directories(ReLUQPSolver PUBLIC ReLUQP-cpp/reluqp)
-target_link_libraries(ReLUQPSolver ReLUQP)
-install(TARGETS ReLUQPSolver RUNTIME DESTINATION ${CMAKE_SOURCE_DIR}/resources/${IHMC_PATH} LIBRARY DESTINATION ${CMAKE_SOURCE_DIR}/resources/${IHMC_PATH})
-if(APPLE)
-	set_target_properties(ReLUQPSolver PROPERTIES SUFFIX ".dylib")
-endif(APPLE)
-
 ############# qpOASES - JNI w/ Objects ##############
 add_library(IHMCOASESConstrainedQPSolver SHARED  "QpOASESJNISolver.cpp" "QpOASESSolverHandle.cpp")
 target_link_libraries(IHMCOASESConstrainedQPSolver qpOASES)
@@ -66,26 +49,26 @@ if(APPLE)
 	set_target_properties(IHMCOASESConstrainedQPSolver PROPERTIES SUFFIX ".dylib")
 endif(APPLE)
 
-############ qpOASES - SWIG #############
+############# qpOASES - SWIG #############
 
-INCLUDE(${SWIG_USE_FILE})
-SET(CMAKE_SWIG_FLAGS "")
-
-SET_SOURCE_FILES_PROPERTIES(qpOASES.i PROPERTIES CPLUSPLUS ON)
-SET_SOURCE_FILES_PROPERTIES(qpOASES.i PROPERTIES SWIG_FLAGS "-includeall")
-SET_SOURCE_FILES_PROPERTIES(qpOASES.i PROPERTIES SWIG_FLAGS "-cpperraswarn")
-
-SET( CMAKE_SWIG_FLAGS -package ${IHMC_PACK}.qpOASES)
-SET(CMAKE_SWIG_OUTDIR ${CMAKE_SOURCE_DIR}/generated-src/${IHMC_PATH}/qpOASES)
-
-SWIG_ADD_MODULE(qpOASESSwig   java qpOASES.i)
-SET_SOURCE_FILES_PROPERTIES(${SWIG_GENERATED_FILE_FULLNAME} PROPERTIES COMPILE_FLAGS "-fPIC")
-SWIG_LINK_LIBRARIES(qpOASESSwig ${JAVA_LIBRARIES}  qpOASES )
-if(APPLE)
-	set_target_properties(qpOASESSwig PROPERTIES SUFFIX ".dylib")
-endif(APPLE)
-
-install(TARGETS qpOASESSwig DESTINATION ${CMAKE_SOURCE_DIR}/resources/${IHMC_PATH})
+#INCLUDE(${SWIG_USE_FILE})
+#SET(CMAKE_SWIG_FLAGS "")
+#
+#SET_SOURCE_FILES_PROPERTIES(qpOASES.i PROPERTIES CPLUSPLUS ON)
+#SET_SOURCE_FILES_PROPERTIES(qpOASES.i PROPERTIES SWIG_FLAGS "-includeall")
+#SET_SOURCE_FILES_PROPERTIES(qpOASES.i PROPERTIES SWIG_FLAGS "-cpperraswarn")
+#
+#SET( CMAKE_SWIG_FLAGS -package ${IHMC_PACK}.qpOASES)
+#SET(CMAKE_SWIG_OUTDIR ${CMAKE_SOURCE_DIR}/generated-src/${IHMC_PATH}/qpOASES)
+#
+#SWIG_ADD_MODULE(qpOASESSwig   java qpOASES.i)
+#SET_SOURCE_FILES_PROPERTIES(${SWIG_GENERATED_FILE_FULLNAME} PROPERTIES COMPILE_FLAGS "-fPIC")
+#SWIG_LINK_LIBRARIES(qpOASESSwig ${JAVA_LIBRARIES}  qpOASES )
+#if(APPLE)
+#	set_target_properties(qpOASESSwig PROPERTIES SUFFIX ".dylib")
+#endif(APPLE)
+#
+#install(TARGETS qpOASESSwig DESTINATION ${CMAKE_SOURCE_DIR}/resources/${IHMC_PATH})
 
 
 ############# quadProg ###################

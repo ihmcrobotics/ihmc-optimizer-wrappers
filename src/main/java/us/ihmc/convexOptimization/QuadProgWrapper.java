@@ -11,7 +11,7 @@ import us.ihmc.tools.nativelibraries.NativeLibraryLoader;
 
 public class QuadProgWrapper {
     static {
-       String library = NativeLibraryLoader.extractLibrary("us.ihmc.convexOptimization", "uQuadProg_rel");
+       String library = NativeLibraryLoader.extractLibrary("ihmc-optimizer-wrappers.native", "uQuadProg_rel");
        Native.register(QuadProgWrapper.class, library);
     }
 

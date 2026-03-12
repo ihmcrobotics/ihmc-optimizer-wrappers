@@ -6,7 +6,7 @@ import us.ihmc.tools.nativelibraries.NativeLibraryLoader;
 
 public class QpOASESSwigWrapper extends AbstractQpOASESWrapper {
 	static{
-	   NativeLibraryLoader.loadLibrary("us.ihmc.convexOptimization", "qpOASESSwig_rel");
+	   NativeLibraryLoader.loadLibrary("ihmc-optimizer-wrappers.native", "qpOASESSwig_rel");
 	}
 
 	SQProblem qProblem=null;
