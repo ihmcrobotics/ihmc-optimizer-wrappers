@@ -13,19 +13,16 @@ mkdir build
 ########################################
 cd build
 if [ "${MAC_CROSS_COMPILE_ARM:-0}" == "1" ]; then
-  cmake -DCMAKE_BUILD_TYPE=Release \
-        -DCMAKE_OSX_ARCHITECTURES="arm64" \
+  cmake -DCMAKE_OSX_ARCHITECTURES="arm64" \
         ..
 elif [ "${LINUX_CROSS_COMPILE_ARM:-0}" == "1" ]; then
-  cmake -DCMAKE_BUILD_TYPE=Release \
-        -DCMAKE_C_COMPILER=aarch64-linux-gnu-gcc \
+  cmake -DCMAKE_C_COMPILER=aarch64-linux-gnu-gcc \
         -DCMAKE_CXX_COMPILER=aarch64-linux-gnu-g++ \
         -DCMAKE_FIND_ROOT_PATH=/usr/aarch64-linux-gnu \
         -DCMAKE_PROGRAM_PATH=/usr/aarch64-linux-gnu/bin \
         ..
 else
-  cmake -DCMAKE_BUILD_TYPE=Release \
-        ..
+  cmake ..
 fi
 cmake --build .
 cd "$REPO_ROOT"

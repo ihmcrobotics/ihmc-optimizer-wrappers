@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.11)
 
 if(DEFINED ENV{BOOST_ROOT})
     message(STATUS "Using Boost from: $ENV{BOOST_ROOT}")
-    include_directories("$ENV{BOOST_ROOT}/include")
+    include_directories("$ENV{BOOST_ROOT}")
 endif()
 
 if(WIN32)
