@@ -54,13 +54,13 @@ if [ -f "csrc/libuQuadProg_rel.so" ]; then
 fi
 # Windows
 mkdir -p ../src/main/resources/ihmc-optimizer-wrappers/native/windows-x86_64
-if [ -f "csrc/IHMCOASESConstrainedQPSolver_rel.dll" ]; then
+if [ -f "csrc/Release/IHMCOASESConstrainedQPSolver_rel.dll" ]; then
   cp csrc/Release/IHMCOASESConstrainedQPSolver_rel.dll ../src/main/resources/ihmc-optimizer-wrappers/native/windows-x86_64/
 fi
-if [ -f "csrc/OASESConstrainedQPSolver_rel.dll" ]; then
+if [ -f "csrc/Release/OASESConstrainedQPSolver_rel.dll" ]; then
   cp csrc/Release/OASESConstrainedQPSolver_rel.dll ../src/main/resources/ihmc-optimizer-wrappers/native/windows-x86_64/
 fi
-if [ -f "csrc/uQuadProg_rel.dll" ]; then
+if [ -f "csrc/Release/uQuadProg_rel.dll" ]; then
   cp csrc/Release/uQuadProg_rel.dll ../src/main/resources/ihmc-optimizer-wrappers/native/windows-x86_64/
 fi
 # macOS
