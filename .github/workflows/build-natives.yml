@@ -67,7 +67,9 @@ jobs:
         env:
           BOOST_ROOT: D:/a/ihmc-optimizer-wrappers/ihmc-optimizer-wrappers/boost/boost
         run: |
-          ls D:/a/ihmc-optimizer-wrappers/ihmc-optimizer-wrappers/boost/boost
+          ls D:/a/ihmc-optimizer-wrappers/ihmc-optimizer-wrappers/boost/boost/include
+          echo "ASDFASDF"
+          ls D:/a/ihmc-optimizer-wrappers/ihmc-optimizer-wrappers/boost/boost/boost
           bash cppbuild.bash
       - name: Commit native libraries
         uses: EndBug/add-and-commit@v9
