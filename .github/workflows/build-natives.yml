@@ -56,6 +56,26 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
+      - name: Install Boost 1.90.0 via choco
+        shell: powershell
+        run: |
+          # Install chocolatey if needed (usually pre-installed on windows-2022)
+          if (!(Get-Command choco -ErrorAction SilentlyContinue)) {
+            Set-ExecutionPolicy Bypass -Scope Process -Force; 
+            [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072;
+            iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+          }
+          
+          # Install Boost 1.90.0 for MSVC 14.3 (VS 2022)
+          choco install boost-msvc-14.3 --version=1.90.0 -y --force
+
+          # Set BOOST_ROOT for CMake (standard choco path)
+          $boost_root = "C:\local\boost_1_90_0"
+          Write-Output "BOOST_ROOT=$boost_root" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          Write-Output "CMAKE_PREFIX_PATH=$boost_root" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
+          # Verify install
+          ls $boost_root\lib | Select-String -Pattern "boost" | head -5
       - name: Compile native library
         run: |
           bash cppbuild.bash
